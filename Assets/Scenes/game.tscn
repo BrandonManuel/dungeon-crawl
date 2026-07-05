@@ -1,0 +1,34 @@
+[gd_scene format=3 uid="uid://bq40wywhnsowm"]
+
+[ext_resource type="AudioStream" uid="uid://bxpcwvo1hb8jq" path="res://Assets/Music/crawling.wav" id="1_lcp10"]
+[ext_resource type="Script" uid="uid://b5bjd2q3711jh" path="res://Assets/Scripts/player.gd" id="2_pb48a"]
+[ext_resource type="Texture2D" uid="uid://bvhogkii5cn2o" path="res://Assets/Sprites/Warrior.png" id="3_hni1o"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wrm1d"]
+radius = 7.0
+height = 26.0
+
+[node name="Game" type="Node2D" unique_id=828079101]
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1337511773]
+stream = ExtResource("1_lcp10")
+autoplay = true
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1460049001]
+motion_mode = 1
+script = ExtResource("2_pb48a")
+
+[node name="Visual" type="Node2D" parent="Player" unique_id=24365496]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/Visual" unique_id=1890407265]
+root_node = NodePath("../..")
+
+[node name="Sprite2D" type="Sprite2D" parent="Player/Visual" unique_id=322790060]
+texture = ExtResource("3_hni1o")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1168331691]
+shape = SubResource("CapsuleShape2D_wrm1d")
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=952533570]
+process_callback = 0
+position_smoothing_enabled = true
