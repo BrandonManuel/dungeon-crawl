@@ -3,12 +3,39 @@
 [ext_resource type="AudioStream" uid="uid://bxpcwvo1hb8jq" path="res://Assets/Music/crawling.wav" id="1_lcp10"]
 [ext_resource type="Script" uid="uid://b5bjd2q3711jh" path="res://Assets/Scripts/player.gd" id="2_pb48a"]
 [ext_resource type="Texture2D" uid="uid://bvhogkii5cn2o" path="res://Assets/Sprites/Warrior.png" id="3_hni1o"]
+[ext_resource type="Script" uid="uid://x4xrr8j8ddny" path="res://Assets/Scripts/camera_2d.gd" id="4_pb48a"]
+[ext_resource type="Texture2D" uid="uid://ccny13nc4ouwn" path="res://Assets/Sprites/Goblin_Looking_Down.png" id="5_iusbg"]
+[ext_resource type="Texture2D" uid="uid://yh8ex10jlntt" path="res://Assets/Sprites/Goblin_Looking_Up.png" id="6_of3jj"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wrm1d"]
 radius = 7.0
 height = 26.0
 
 [node name="Game" type="Node2D" unique_id=828079101]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=303177847]
+offset_left = -185.0
+offset_top = -143.0
+offset_right = -112.0
+offset_bottom = -78.0
+
+[node name="ColorRect2" type="ColorRect" parent="." unique_id=1477123238]
+offset_left = -185.0
+offset_top = 50.0
+offset_right = -112.0
+offset_bottom = 115.0
+
+[node name="ColorRect3" type="ColorRect" parent="." unique_id=1293360210]
+offset_left = 95.0
+offset_top = -139.0
+offset_right = 168.0
+offset_bottom = -74.0
+
+[node name="ColorRect4" type="ColorRect" parent="." unique_id=1418057319]
+offset_left = 101.0
+offset_top = 45.0
+offset_right = 174.0
+offset_bottom = 110.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1337511773]
 stream = ExtResource("1_lcp10")
@@ -32,3 +59,22 @@ shape = SubResource("CapsuleShape2D_wrm1d")
 [node name="Camera2D" type="Camera2D" parent="Player" unique_id=952533570]
 process_callback = 0
 position_smoothing_enabled = true
+script = ExtResource("4_pb48a")
+
+[node name="GoblinLookingDown" type="Sprite2D" parent="." unique_id=1411424850]
+position = Vector2(-44, -52)
+texture = ExtResource("5_iusbg")
+
+[node name="GoblinLookingUp" type="Sprite2D" parent="." unique_id=2054602708]
+position = Vector2(-43, 65)
+texture = ExtResource("6_of3jj")
+
+[node name="GoblinLookingUp" type="Sprite2D" parent="GoblinLookingUp" unique_id=1088031314]
+position = Vector2(86, -1)
+texture = ExtResource("6_of3jj")
+flip_h = true
+
+[node name="GoblinLookingDown2" type="Sprite2D" parent="." unique_id=1294644225]
+position = Vector2(46, -53)
+texture = ExtResource("5_iusbg")
+flip_h = true
