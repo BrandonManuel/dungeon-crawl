@@ -1,17 +1,24 @@
 [gd_scene format=3 uid="uid://bq40wywhnsowm"]
 
 [ext_resource type="AudioStream" uid="uid://bxpcwvo1hb8jq" path="res://Assets/Music/crawling.wav" id="1_lcp10"]
-[ext_resource type="Script" uid="uid://b5bjd2q3711jh" path="res://Assets/Scripts/player.gd" id="2_pb48a"]
-[ext_resource type="Texture2D" uid="uid://bvhogkii5cn2o" path="res://Assets/Sprites/Warrior.png" id="3_hni1o"]
-[ext_resource type="Script" uid="uid://x4xrr8j8ddny" path="res://Assets/Scripts/camera_2d.gd" id="4_pb48a"]
-[ext_resource type="Texture2D" uid="uid://ccny13nc4ouwn" path="res://Assets/Sprites/Goblin_Looking_Down.png" id="5_iusbg"]
-[ext_resource type="Texture2D" uid="uid://yh8ex10jlntt" path="res://Assets/Sprites/Goblin_Looking_Up.png" id="6_of3jj"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wrm1d"]
-radius = 7.0
-height = 26.0
+[ext_resource type="PackedScene" uid="uid://d363t8itgryga" path="res://Assets/Scenes/goblin.tscn" id="1_pb48a"]
+[ext_resource type="PackedScene" uid="uid://dc57no77t7pie" path="res://Assets/Scenes/player.tscn" id="4_iusbg"]
 
 [node name="Game" type="Node2D" unique_id=828079101]
+
+[node name="Enemies" type="Node" parent="." unique_id=1705692595]
+
+[node name="Goblin" parent="Enemies" unique_id=863396306 instance=ExtResource("1_pb48a")]
+position = Vector2(-55, 101)
+
+[node name="Goblin2" parent="Enemies" unique_id=327641068 instance=ExtResource("1_pb48a")]
+position = Vector2(155, -8)
+
+[node name="Goblin3" parent="Enemies" unique_id=1042688859 instance=ExtResource("1_pb48a")]
+position = Vector2(58, -104)
+
+[node name="Goblin4" parent="Enemies" unique_id=747626369 instance=ExtResource("1_pb48a")]
+position = Vector2(-120, -37)
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=303177847]
 offset_left = -185.0
@@ -41,40 +48,4 @@ offset_bottom = 110.0
 stream = ExtResource("1_lcp10")
 autoplay = true
 
-[node name="Player" type="CharacterBody2D" parent="." unique_id=1460049001]
-motion_mode = 1
-script = ExtResource("2_pb48a")
-
-[node name="Visual" type="Node2D" parent="Player" unique_id=24365496]
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player/Visual" unique_id=1890407265]
-root_node = NodePath("../..")
-
-[node name="Sprite2D" type="Sprite2D" parent="Player/Visual" unique_id=322790060]
-texture = ExtResource("3_hni1o")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1168331691]
-shape = SubResource("CapsuleShape2D_wrm1d")
-
-[node name="Camera2D" type="Camera2D" parent="Player" unique_id=952533570]
-process_callback = 0
-position_smoothing_enabled = true
-script = ExtResource("4_pb48a")
-
-[node name="GoblinLookingDown" type="Sprite2D" parent="." unique_id=1411424850]
-position = Vector2(-44, -52)
-texture = ExtResource("5_iusbg")
-
-[node name="GoblinLookingUp" type="Sprite2D" parent="." unique_id=2054602708]
-position = Vector2(-43, 65)
-texture = ExtResource("6_of3jj")
-
-[node name="GoblinLookingUp" type="Sprite2D" parent="GoblinLookingUp" unique_id=1088031314]
-position = Vector2(86, -1)
-texture = ExtResource("6_of3jj")
-flip_h = true
-
-[node name="GoblinLookingDown2" type="Sprite2D" parent="." unique_id=1294644225]
-position = Vector2(46, -53)
-texture = ExtResource("5_iusbg")
-flip_h = true
+[node name="Player" parent="." unique_id=1913849330 groups=["player"] instance=ExtResource("4_iusbg")]

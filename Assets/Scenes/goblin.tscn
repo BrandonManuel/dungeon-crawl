@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://d363t8itgryga"]
+
+[ext_resource type="Script" uid="uid://b7nbiewccwujs" path="res://Assets/Scripts/goblin.gd" id="1_tjamc"]
+[ext_resource type="Texture2D" uid="uid://ccny13nc4ouwn" path="res://Assets/Sprites/Goblin_Looking_Down.png" id="2_suboo"]
+[ext_resource type="Texture2D" uid="uid://yh8ex10jlntt" path="res://Assets/Sprites/Goblin_Looking_Up.png" id="3_dcbak"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_of3jj"]
+radius = 9.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hni1o"]
+atlas = ExtResource("2_suboo")
+region = Rect2(0, 0, 20, 31)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iusbg"]
+atlas = ExtResource("3_dcbak")
+region = Rect2(0, 0, 20, 31)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_of3jj"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hni1o")
+}],
+"loop": true,
+"name": &"move_down",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iusbg")
+}],
+"loop": true,
+"name": &"move_up",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tjamc"]
+radius = 9.0
+
+[node name="Goblin" type="CharacterBody2D" unique_id=489501098]
+collision_layer = 4
+collision_mask = 5
+script = ExtResource("1_tjamc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1363112958]
+shape = SubResource("CapsuleShape2D_of3jj")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=417484488]
+sprite_frames = SubResource("SpriteFrames_of3jj")
+animation = &"move_down"
+
+[node name="HitBox" type="Area2D" parent="." unique_id=1629706972]
+collision_layer = 4
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox" unique_id=604409900]
+shape = SubResource("CapsuleShape2D_tjamc")
+
+[connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]
+[connection signal="body_exited" from="HitBox" to="." method="_on_hit_box_body_exited"]

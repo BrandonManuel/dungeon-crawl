@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://dc57no77t7pie"]
+
+[ext_resource type="Script" uid="uid://b5bjd2q3711jh" path="res://Assets/Scripts/player.gd" id="1_38rej"]
+[ext_resource type="Texture2D" uid="uid://bvhogkii5cn2o" path="res://Assets/Sprites/Warrior.png" id="2_t1xgp"]
+[ext_resource type="Script" uid="uid://x4xrr8j8ddny" path="res://Assets/Scripts/camera_2d.gd" id="3_23lac"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wrm1d"]
+radius = 7.0
+height = 26.0
+
+[node name="Player" type="CharacterBody2D" unique_id=1913849330 groups=["player"]]
+collision_layer = 2
+collision_mask = 3
+motion_mode = 1
+script = ExtResource("1_38rej")
+
+[node name="Visual" type="Node2D" parent="." unique_id=1683080154]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Visual" unique_id=2114046268]
+root_node = NodePath("../..")
+
+[node name="Sprite2D" type="Sprite2D" parent="Visual" unique_id=913286051]
+texture = ExtResource("2_t1xgp")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1860281384]
+shape = SubResource("CapsuleShape2D_wrm1d")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=868065286]
+process_callback = 0
+position_smoothing_enabled = true
+script = ExtResource("3_23lac")
