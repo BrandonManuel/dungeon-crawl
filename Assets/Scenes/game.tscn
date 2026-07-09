@@ -1,51 +1,41 @@
-[gd_scene format=3 uid="uid://bq40wywhnsowm"]
+[gd_scene format=4 uid="uid://bq40wywhnsowm"]
 
+[ext_resource type="Texture2D" uid="uid://4fmdrktcruhy" path="res://Assets/Sprites/Wall.png" id="1_hni1o"]
 [ext_resource type="AudioStream" uid="uid://bxpcwvo1hb8jq" path="res://Assets/Music/crawling.wav" id="1_lcp10"]
-[ext_resource type="PackedScene" uid="uid://d363t8itgryga" path="res://Assets/Scenes/goblin.tscn" id="1_pb48a"]
-[ext_resource type="PackedScene" uid="uid://dc57no77t7pie" path="res://Assets/Scenes/player.tscn" id="4_iusbg"]
+[ext_resource type="PackedScene" uid="uid://3rxs3hnvsso0" path="res://Assets/Scenes/goblin.tscn" id="1_pb48a"]
+[ext_resource type="PackedScene" path="res://Assets/Scenes/player.tscn" id="4_iusbg"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iusbg"]
+texture = ExtResource("1_hni1o")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[sub_resource type="TileSet" id="TileSet_of3jj"]
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_iusbg")
 
 [node name="Game" type="Node2D" unique_id=828079101]
+
+[node name="Walls" type="TileMapLayer" parent="." unique_id=35146028]
+tile_map_data = PackedByteArray("AAD5//r/AAAAAAAAAAD6//r/AAAAAAAAAAD7//r/AAAAAAAAAAD7//z/AAAAAAAAAAD6//z/AAAAAAAAAAD5//v/AAAAAAAAAAD5//z/AAAAAAAAAAD6//v/AAAAAAAAAAD7//v/AAAAAAAAAAAGAPr/AAAAAAAAAAAGAPv/AAAAAAAAAAAGAPz/AAAAAAAAAAAHAPr/AAAAAAAAAAAHAPv/AAAAAAAAAAAHAPz/AAAAAAAAAAAIAPr/AAAAAAAAAAAIAPv/AAAAAAAAAAAIAPz/AAAAAAAAAAD5/wIAAAAAAAAAAAD5/wMAAAAAAAAAAAD5/wQAAAAAAAAAAAD6/wIAAAAAAAAAAAD6/wMAAAAAAAAAAAD6/wQAAAAAAAAAAAD7/wIAAAAAAAAAAAD7/wMAAAAAAAAAAAD7/wQAAAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAQAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_of3jj")
 
 [node name="Enemies" type="Node" parent="." unique_id=1705692595]
 
 [node name="Goblin" parent="Enemies" unique_id=863396306 instance=ExtResource("1_pb48a")]
-position = Vector2(-55, 101)
+position = Vector2(4, 149)
 
 [node name="Goblin2" parent="Enemies" unique_id=327641068 instance=ExtResource("1_pb48a")]
-position = Vector2(155, -8)
+position = Vector2(263, -4)
 
 [node name="Goblin3" parent="Enemies" unique_id=1042688859 instance=ExtResource("1_pb48a")]
-position = Vector2(58, -104)
+position = Vector2(119, -147)
 
 [node name="Goblin4" parent="Enemies" unique_id=747626369 instance=ExtResource("1_pb48a")]
-position = Vector2(-120, -37)
-
-[node name="ColorRect" type="ColorRect" parent="." unique_id=303177847]
-offset_left = -185.0
-offset_top = -143.0
-offset_right = -112.0
-offset_bottom = -78.0
-
-[node name="ColorRect2" type="ColorRect" parent="." unique_id=1477123238]
-offset_left = -185.0
-offset_top = 50.0
-offset_right = -112.0
-offset_bottom = 115.0
-
-[node name="ColorRect3" type="ColorRect" parent="." unique_id=1293360210]
-offset_left = 95.0
-offset_top = -139.0
-offset_right = 168.0
-offset_bottom = -74.0
-
-[node name="ColorRect4" type="ColorRect" parent="." unique_id=1418057319]
-offset_left = 101.0
-offset_top = 45.0
-offset_right = 174.0
-offset_bottom = 110.0
+position = Vector2(-228, -77)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1337511773]
 stream = ExtResource("1_lcp10")
 autoplay = true
 
-[node name="Player" parent="." unique_id=1913849330 groups=["player"] instance=ExtResource("4_iusbg")]
+[node name="Player" parent="." unique_id=1913849330 instance=ExtResource("4_iusbg")]
