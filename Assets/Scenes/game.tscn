@@ -2,8 +2,8 @@
 
 [ext_resource type="Texture2D" uid="uid://4fmdrktcruhy" path="res://Assets/Sprites/Wall.png" id="1_hni1o"]
 [ext_resource type="AudioStream" uid="uid://bxpcwvo1hb8jq" path="res://Assets/Music/crawling.wav" id="1_lcp10"]
-[ext_resource type="PackedScene" uid="uid://3rxs3hnvsso0" path="res://Assets/Scenes/goblin.tscn" id="1_pb48a"]
-[ext_resource type="PackedScene" path="res://Assets/Scenes/player.tscn" id="4_iusbg"]
+[ext_resource type="PackedScene" uid="uid://d363t8itgryga" path="res://Assets/Scenes/goblin.tscn" id="1_pb48a"]
+[ext_resource type="PackedScene" uid="uid://dc57no77t7pie" path="res://Assets/Scenes/player.tscn" id="4_iusbg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iusbg"]
 texture = ExtResource("1_hni1o")
@@ -14,16 +14,25 @@ texture = ExtResource("1_hni1o")
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_iusbg")
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_pb48a"]
+vertices = PackedVector2Array(418.0703, -224.95313, 422.90625, 262.64844, 312, 56, 312, 24, -72, -24, -72, 56, -104, 40, -104, -56, 216, 24, 216, 40, 200, 40, 200, -120, 104, -120, 104, -104, 72, -104, -339.39063, -221.03125, 72, -88, 56, -88, 56, -8, 40, -8, -40, -24, 40, 24, -40, 24, -312, -24, -136, -24, -136, 40, -362.59375, 229.35156, 72, 56, 72, 24, 88, 24, 168, 72, 88, -56, 104, -56, 104, -72, 136, -72, 136, -88, 168, -88, 248, 72, 248, 56, 72, 136, 72, 104, 40, 104, 40, 88, -40, 88, -40, 104, -72, 104, -72, 136, -24, 136, -24, 152, 24, 152, 24, 136, -312, -56)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 5, 6, 7), PackedInt32Array(8, 9, 10, 11), PackedInt32Array(12, 13, 14, 15), PackedInt32Array(14, 16, 17, 15), PackedInt32Array(15, 17, 18, 19, 20, 7), PackedInt32Array(19, 21, 22, 20), PackedInt32Array(23, 24, 25, 26), PackedInt32Array(27, 28, 29, 30), PackedInt32Array(29, 31, 32, 30), PackedInt32Array(32, 33, 34, 30), PackedInt32Array(34, 35, 36, 30), PackedInt32Array(37, 38, 2), PackedInt32Array(39, 37, 2, 1), PackedInt32Array(30, 37, 39, 40), PackedInt32Array(27, 30, 40, 41, 42), PackedInt32Array(5, 27, 42, 43), PackedInt32Array(6, 5, 43, 44, 45, 25), PackedInt32Array(46, 47, 48, 26), PackedInt32Array(49, 50, 39, 1), PackedInt32Array(3, 8, 11, 0), PackedInt32Array(15, 0, 11, 12), PackedInt32Array(20, 4, 7), PackedInt32Array(15, 7, 51), PackedInt32Array(26, 15, 51, 23), PackedInt32Array(26, 25, 45, 46), PackedInt32Array(49, 1, 26, 48)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-347, -229, 426, -233, 431, 271, -371, 237)])
+source_geometry_mode = 1
+source_geometry_group_name = &"navigation"
+cell_size = 4.0
+agent_radius = 8.0
+
 [node name="Game" type="Node2D" unique_id=828079101]
 
-[node name="Walls" type="TileMapLayer" parent="." unique_id=35146028]
-tile_map_data = PackedByteArray("AAD5//r/AAAAAAAAAAD6//r/AAAAAAAAAAD7//r/AAAAAAAAAAD7//z/AAAAAAAAAAD6//z/AAAAAAAAAAD5//v/AAAAAAAAAAD5//z/AAAAAAAAAAD6//v/AAAAAAAAAAD7//v/AAAAAAAAAAAGAPr/AAAAAAAAAAAGAPv/AAAAAAAAAAAGAPz/AAAAAAAAAAAHAPr/AAAAAAAAAAAHAPv/AAAAAAAAAAAHAPz/AAAAAAAAAAAIAPr/AAAAAAAAAAAIAPv/AAAAAAAAAAAIAPz/AAAAAAAAAAD5/wIAAAAAAAAAAAD5/wMAAAAAAAAAAAD5/wQAAAAAAAAAAAD6/wIAAAAAAAAAAAD6/wMAAAAAAAAAAAD6/wQAAAAAAAAAAAD7/wIAAAAAAAAAAAD7/wMAAAAAAAAAAAD7/wQAAAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAQAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAA=")
+[node name="Walls" type="TileMapLayer" parent="." unique_id=35146028 groups=["navigation"]]
+tile_map_data = PackedByteArray("AAD8////AAAAAAAAAAD8/wAAAAAAAAAAAAD8/wEAAAAAAAAAAAD8/wIAAAAAAAAAAAD9/wIAAAAAAAAAAAD+/wIAAAAAAAAAAAD//wIAAAAAAAAAAAAAAAIAAAAAAAAAAAABAAIAAAAAAAAAAAACAAIAAAAAAAAAAAADAAIAAAAAAAAAAAADAAEAAAAAAAAAAAADAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAP//AAAAAAAAAAAEAP7/AAAAAAAAAAAEAP3/AAAAAAAAAAAEAPz/AAAAAAAAAAAEAPv/AAAAAAAAAAAFAPv/AAAAAAAAAAAFAPr/AAAAAAAAAAAGAPr/AAAAAAAAAAAHAPr/AAAAAAAAAAAHAPn/AAAAAAAAAAAIAPn/AAAAAAAAAAAJAPn/AAAAAAAAAAAKAPn/AAAAAAAAAAALAPn/AAAAAAAAAAALAPr/AAAAAAAAAAALAPv/AAAAAAAAAAALAPz/AAAAAAAAAAALAP3/AAAAAAAAAAALAP7/AAAAAAAAAAALAP//AAAAAAAAAAALAAAAAAAAAAAAAAALAAEAAAAAAAAAAAALAAIAAAAAAAAAAAALAAMAAAAAAAAAAAAMAAMAAAAAAAAAAAANAAMAAAAAAAAAAAAOAAMAAAAAAAAAAAAOAAIAAAAAAAAAAAAPAAIAAAAAAAAAAAAQAAIAAAAAAAAAAAARAAIAAAAAAAAAAAASAAIAAAAAAAAAAADt//3/AAAAAAAAAADu//3/AAAAAAAAAADv//3/AAAAAAAAAADw//3/AAAAAAAAAADx//3/AAAAAAAAAADy//3/AAAAAAAAAADz//3/AAAAAAAAAAD0//3/AAAAAAAAAAD1//3/AAAAAAAAAAD2//3/AAAAAAAAAAD3//3/AAAAAAAAAAD4//3/AAAAAAAAAAD4//7/AAAAAAAAAAD4////AAAAAAAAAAD4/wAAAAAAAAAAAAD4/wEAAAAAAAAAAAD+/wYAAAAAAAAAAAD//wYAAAAAAAAAAAAAAAYAAAAAAAAAAAABAAYAAAAAAAAAAAABAAcAAAAAAAAAAAACAAcAAAAAAAAAAAADAAcAAAAAAAAAAAAAAAcAAAAAAAAAAAD//wcAAAAAAAAAAAD+/wcAAAAAAAAAAAD9/wcAAAAAAAAAAAD8/wcAAAAAAAAAAAD//wgAAAAAAAAAAAAAAAgAAAAAAAAAAAA=")
 tile_set = SubResource("TileSet_of3jj")
 
 [node name="Enemies" type="Node" parent="." unique_id=1705692595]
 
 [node name="Goblin" parent="Enemies" unique_id=863396306 instance=ExtResource("1_pb48a")]
-position = Vector2(4, 149)
+position = Vector2(4, 160)
 
 [node name="Goblin2" parent="Enemies" unique_id=327641068 instance=ExtResource("1_pb48a")]
 position = Vector2(263, -4)
@@ -39,3 +48,6 @@ stream = ExtResource("1_lcp10")
 autoplay = true
 
 [node name="Player" parent="." unique_id=1913849330 instance=ExtResource("4_iusbg")]
+
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="." unique_id=299483731]
+navigation_polygon = SubResource("NavigationPolygon_pb48a")

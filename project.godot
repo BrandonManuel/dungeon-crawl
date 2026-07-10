@@ -29,6 +29,7 @@ project/assembly_name="Dungeon Crawl"
 [global_group]
 
 player=""
+navigation=""
 
 [input]
 
@@ -62,6 +63,10 @@ move_down={
 2d_physics/layer_1="world"
 2d_physics/layer_2="player"
 2d_physics/layer_3="enemies"
+
+[navigation]
+
+2d/default_cell_size=4.0
 
 [physics]
 

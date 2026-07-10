@@ -1,6 +1,7 @@
 extends Enemy
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
 
 const SPEED = 10.0
 
@@ -12,14 +13,18 @@ func _ready() -> void:
 		players.push_back(player_node as CharacterBody2D)
 
 func _physics_process(delta: float) -> void:
-	var direction: Vector2
+	var target: Vector2
 	var current_closest_player_distance: int
 	for player in players:
 		var distance: float = global_position.distance_to(player.global_position)
-		if direction == Vector2.ZERO or distance < current_closest_player_distance:
-			direction = global_position.direction_to(player.global_position)
+		if target == Vector2.ZERO or distance < current_closest_player_distance:
+			current_closest_player_distance = distance
+			target = player.global_position
 			
-	if direction != Vector2.ZERO:
+	if target != null:
+		navigation_agent_2d.target_position = target
+		var next_path_pos := navigation_agent_2d.get_next_path_position()
+		var direction: Vector2 = global_position.direction_to(next_path_pos)
 		velocity = direction * SPEED
 		if direction.y < 0:
 			animated_sprite_2d.play("move_up")
