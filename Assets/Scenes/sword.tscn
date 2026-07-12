@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://dp2im0qbuth15" path="res://Assets/Sprites/Weapons.png" id="1_mfbq4"]
 [ext_resource type="Script" uid="uid://cmn1o4k3j3osv" path="res://Assets/Scripts/sword.gd" id="2_35yry"]
+[ext_resource type="Script" uid="uid://dw0qhwns6j3al" path="res://Assets/Scripts/slash.gd" id="3_35yry"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kc3y2"]
 radius = 6.3853655
@@ -24,6 +25,7 @@ rotation = 2.1710424
 texture = ExtResource("1_mfbq4")
 vframes = 2
 frame = 1
+script = ExtResource("3_35yry")
 
 [node name="Area2D" type="Area2D" parent="Effect/Slash" unique_id=473067536]
 collision_layer = 9
