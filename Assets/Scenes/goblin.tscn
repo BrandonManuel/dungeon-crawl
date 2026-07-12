@@ -37,7 +37,7 @@ animations = [{
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tjamc"]
 radius = 9.0
 
-[node name="Goblin" type="CharacterBody2D" unique_id=489501098]
+[node name="Goblin" type="CharacterBody2D" unique_id=489501098 groups=["enemies"]]
 collision_layer = 4
 collision_mask = 5
 script = ExtResource("1_tjamc")
@@ -59,7 +59,6 @@ shape = SubResource("CapsuleShape2D_tjamc")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=216658786]
 path_desired_distance = 5.0
 target_desired_distance = 5.0
-debug_enabled = true
 
 [connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]
 [connection signal="body_exited" from="HitBox" to="." method="_on_hit_box_body_exited"]

@@ -3,6 +3,9 @@ extends Enemy
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
 
+@export var KNOCKBACK_DECAY: float = 1000.0
+var knockback: Vector2
+
 const SPEED = 10.0
 
 var players: Array[CharacterBody2D]
@@ -25,7 +28,16 @@ func _physics_process(delta: float) -> void:
 		navigation_agent_2d.target_position = target
 		var next_path_pos := navigation_agent_2d.get_next_path_position()
 		var direction: Vector2 = global_position.direction_to(next_path_pos)
-		velocity = direction * SPEED
+		var walk_velocity: Vector2 = direction * SPEED
+		
+		knockback = knockback.move_toward(Vector2.ZERO, KNOCKBACK_DECAY * delta)
+		
+		velocity = walk_velocity + knockback
+
+		if knockback != Vector2.ZERO:
+			print('Walk velocity: ', walk_velocity)
+			print('Knockback: ', knockback)
+			
 		if direction.y < 0:
 			animated_sprite_2d.play("move_up")
 		else:
@@ -48,3 +60,6 @@ func _on_hit_box_body_entered(body: Node2D) -> void:
 func _on_hit_box_body_exited(body: Node2D) -> void:
 	if body.is_in_group('player'):
 		print("no longer hitting player")
+
+func is_hit(force: Vector2) -> void:
+	knockback = force

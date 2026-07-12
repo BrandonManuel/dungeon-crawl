@@ -1,0 +1,37 @@
+[gd_scene format=3 uid="uid://cnetj2md2mlmx"]
+
+[ext_resource type="Texture2D" uid="uid://dp2im0qbuth15" path="res://Assets/Sprites/Weapons.png" id="1_mfbq4"]
+[ext_resource type="Script" uid="uid://cmn1o4k3j3osv" path="res://Assets/Scripts/sword.gd" id="2_35yry"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_kc3y2"]
+radius = 6.3853655
+height = 28.84225
+
+[node name="Sword" type="Sprite2D" unique_id=1478424939]
+texture = ExtResource("1_mfbq4")
+centered = false
+offset = Vector2(-9, -22)
+vframes = 2
+script = ExtResource("2_35yry")
+knockback = 300.0
+
+[node name="Effect" type="Node2D" parent="." unique_id=1869117928]
+
+[node name="Slash" type="Sprite2D" parent="Effect" unique_id=2003974654]
+visible = false
+position = Vector2(6.550865, -11.273254)
+rotation = 2.1710424
+texture = ExtResource("1_mfbq4")
+vframes = 2
+frame = 1
+
+[node name="Area2D" type="Area2D" parent="Effect/Slash" unique_id=473067536]
+collision_layer = 9
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Effect/Slash/Area2D" unique_id=1297887858]
+position = Vector2(-1.113751, 1.4299167)
+shape = SubResource("CapsuleShape2D_kc3y2")
+disabled = true
+
+[connection signal="body_entered" from="Effect/Slash/Area2D" to="." method="_on_area_2d_body_entered"]
