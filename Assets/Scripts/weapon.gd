@@ -7,6 +7,6 @@ var player: CharacterBody2D
 func attack(player: CharacterBody2D) -> void:
 	self.player = player
 
-func hit_enemy(enemy: CharacterBody2D, knockback) -> void:
+func hit_enemy(enemy: CharacterBody2D, knockback: float, damage: float) -> void:
 	print(enemy, ' is hit')
-	enemy.is_hit(player.position.direction_to(enemy.position) * knockback)
+	enemy.is_hit(player.position.direction_to(enemy.position) * knockback, damage)

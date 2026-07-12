@@ -15,6 +15,7 @@ offset = Vector2(-9, -22)
 vframes = 2
 script = ExtResource("2_35yry")
 knockback = 300.0
+damage = 10.0
 
 [node name="Effect" type="Node2D" parent="." unique_id=1869117928]
 

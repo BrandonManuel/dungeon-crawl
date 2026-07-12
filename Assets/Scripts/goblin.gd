@@ -1,14 +1,22 @@
 extends Enemy
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
+@onready var death_sprite: Sprite2D = $DeathSprite
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
-@export var KNOCKBACK_DECAY: float = 1000.0
+@export var KNOCKBACK_DECAY: float = 0.0
+
+@export var health: float = 20.0
+
 var knockback: Vector2
-
 const SPEED = 10.0
 
 var players: Array[CharacterBody2D]
+
+var dead: bool = false
+signal died
 
 func _ready() -> void:
 	var player_nodes = get_tree().get_nodes_in_group('player')
@@ -16,6 +24,9 @@ func _ready() -> void:
 		players.push_back(player_node as CharacterBody2D)
 
 func _physics_process(delta: float) -> void:
+	if dead:
+		return
+		
 	var target: Vector2
 	var current_closest_player_distance: int
 	for player in players:
@@ -34,10 +45,6 @@ func _physics_process(delta: float) -> void:
 		
 		velocity = walk_velocity + knockback
 
-		if knockback != Vector2.ZERO:
-			print('Walk velocity: ', walk_velocity)
-			print('Knockback: ', knockback)
-			
 		if direction.y < 0:
 			animated_sprite_2d.play("move_up")
 		else:
@@ -61,5 +68,17 @@ func _on_hit_box_body_exited(body: Node2D) -> void:
 	if body.is_in_group('player'):
 		print("no longer hitting player")
 
-func is_hit(force: Vector2) -> void:
-	knockback = force
+func is_hit(force: Vector2, damage: float) -> void:
+	health -= damage
+	if health <= 0:
+		call_deferred('disable_collision')
+		animated_sprite_2d.visible = false
+		death_sprite.visible = true
+		dead = true
+		died.emit()
+		die(animation_player)
+	else:
+		knockback = force
+
+func disable_collision() -> void:
+	collision_shape_2d.disabled = true

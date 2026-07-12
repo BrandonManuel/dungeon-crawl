@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b7nbiewccwujs" path="res://Assets/Scripts/goblin.gd" id="1_tjamc"]
 [ext_resource type="Texture2D" uid="uid://ccny13nc4ouwn" path="res://Assets/Sprites/Goblin_Looking_Down.png" id="2_suboo"]
 [ext_resource type="Texture2D" uid="uid://yh8ex10jlntt" path="res://Assets/Sprites/Goblin_Looking_Up.png" id="3_dcbak"]
+[ext_resource type="Script" uid="uid://dicehix582buy" path="res://Assets/Scripts/blood.gd" id="4_suboo"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_of3jj"]
 radius = 9.0
@@ -35,12 +36,59 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tjamc"]
+radius = 6.0
+height = 24.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_suboo"]
 radius = 9.0
+
+[sub_resource type="Animation" id="Animation_suboo"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DeathSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_tjamc"]
+resource_name = "die"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("DeathSprite:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(-1, 0), Vector2(0, 0), Vector2(1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_suboo"]
+_data = {
+&"RESET": SubResource("Animation_suboo"),
+&"die": SubResource("Animation_tjamc")
+}
+
+[sub_resource type="Curve" id="Curve_dcbak"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5005848, 0), 0.0, 0.0, 0, 0]
+point_count = 2
 
 [node name="Goblin" type="CharacterBody2D" unique_id=489501098 groups=["enemies"]]
 collision_layer = 4
 collision_mask = 5
 script = ExtResource("1_tjamc")
+KNOCKBACK_DECAY = 1000.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1363112958]
 shape = SubResource("CapsuleShape2D_of3jj")
@@ -60,5 +108,35 @@ shape = SubResource("CapsuleShape2D_tjamc")
 path_desired_distance = 5.0
 target_desired_distance = 5.0
 
+[node name="HurtBox" type="Area2D" parent="." unique_id=1943817656]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox" unique_id=748014587]
+shape = SubResource("CapsuleShape2D_suboo")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=917456306]
+libraries/ = SubResource("AnimationLibrary_suboo")
+
+[node name="DeathSprite" type="Sprite2D" parent="." unique_id=735471569]
+visible = false
+position = Vector2(0, 9)
+texture = ExtResource("2_suboo")
+region_enabled = true
+region_rect = Rect2(0, 15.99695, 19.85889, 15.00305)
+
+[node name="CPUParticles2D" type="CPUParticles2D" parent="DeathSprite" unique_id=2114984392]
+visible = false
+position = Vector2(0, -9)
+amount = 30
+lifetime = 0.36
+spread = 180.0
+gravity = Vector2(0, -980)
+initial_velocity_min = 12.69
+initial_velocity_max = 102.84
+scale_amount_max = 4.0
+scale_amount_curve = SubResource("Curve_dcbak")
+color = Color(1, 0, 0, 1)
+script = ExtResource("4_suboo")
+
+[connection signal="died" from="." to="DeathSprite/CPUParticles2D" method="_on_goblin_died"]
 [connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]
 [connection signal="body_exited" from="HitBox" to="." method="_on_hit_box_body_exited"]

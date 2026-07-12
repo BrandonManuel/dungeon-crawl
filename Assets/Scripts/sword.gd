@@ -5,6 +5,7 @@ extends Weapon
 @onready var effect: Node2D = $Effect
 
 @export var knockback: float
+@export var damage: float
 
 var slash_global_position: Vector2
 var slash_local_position: Vector2
@@ -38,4 +39,4 @@ func _physics_process(delta: float) -> void:
 
 func _on_area_2d_body_entered(body: Node2D) -> void:
 	if body.is_in_group('enemies') and body is CharacterBody2D:
-		hit_enemy(body as CharacterBody2D, knockback)
+		hit_enemy(body as CharacterBody2D, knockback, damage)
