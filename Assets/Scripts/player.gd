@@ -3,6 +3,8 @@ extends CharacterBody2D
 @onready var hand: Marker2D = $Hand
 @onready var animation_player: AnimationPlayer = $Visual/AnimationPlayer
 
+@export var attack_delay: float = 0.0
+
 var weapon: Weapon = null
 var last_held_direction: Vector2
 
@@ -11,11 +13,14 @@ const SPEED = 100.0
 var weapon_starting_position: Vector2
 var weapon_starting_rotation: float
 	
-func _process(delta: float) -> void:
+func _ready() -> void:
 	var held = hand.get_children()
 	if held.size() == 1:
 		weapon = held.get(0)
 		
+	set_attack_delay(attack_delay)
+		
+func _process(delta: float) -> void:
 	if not animation_player.is_playing():
 		animation_player.play("idle")
 	
@@ -34,10 +39,9 @@ func handle_movement(delta: float, direction: Vector2) -> void:
 	
 	move_and_slide()
 
-
 func handle_attack(direction: Vector2) -> void:
 	var attack := Input.is_action_just_pressed("attack")
-	if weapon != null and attack and not (animation_player.is_playing() and animation_player.current_animation.contains("attack")):
+	if weapon != null and attack and not (animation_player.is_playing() and animation_player.current_animation.contains("attack")):		
 		if direction.x == 0:
 			if direction.y >= 0:
 				animation_player.play("attack_down")
@@ -59,3 +63,8 @@ func handle_attack(direction: Vector2) -> void:
 				animation_player.play("attack_up_left")
 				
 		weapon.attack(self)
+
+func set_attack_delay(attack_delay: float):
+	for animation in animation_player.get_animation_list():
+		if animation.contains('attack'):
+			animation_player.get_animation(animation).length = animation_player.get_animation(animation).length + attack_delay
