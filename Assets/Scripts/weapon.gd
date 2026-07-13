@@ -4,8 +4,8 @@ class_name Weapon
 
 var player: CharacterBody2D
 
-func attack(player: CharacterBody2D) -> void:
-	self.player = player
+func attack(attacker: CharacterBody2D) -> void:
+	self.player = attacker
 
 func hit_enemy(enemy: CharacterBody2D, knockback: float, damage: float) -> void:
 	print(enemy, ' is hit')

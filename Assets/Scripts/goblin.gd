@@ -5,6 +5,7 @@ extends Enemy
 @onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
 @onready var death_sprite: Sprite2D = $DeathSprite
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var hit_box_collision_shape_2d: CollisionShape2D = $HitBox/CollisionShape2D
 
 @export var KNOCKBACK_DECAY: float = 0.0
 
@@ -15,6 +16,7 @@ const SPEED = 10.0
 
 var players: Array[CharacterBody2D]
 
+var hit: bool = false
 var dead: bool = false
 signal died
 
@@ -45,14 +47,15 @@ func _physics_process(delta: float) -> void:
 		
 		velocity = walk_velocity + knockback
 
-		if direction.y < 0:
-			animated_sprite_2d.play("move_up")
-		else:
-			animated_sprite_2d.play("move_down")
-		if direction.x < 0:
-			animated_sprite_2d.flip_h = true
-		else:
-			animated_sprite_2d.flip_h = false
+		if !hit:
+			if direction.y < 0:
+				animated_sprite_2d.play("move_up")
+			else:
+				animated_sprite_2d.play("move_down")
+			if direction.x < 0:
+				animated_sprite_2d.flip_h = true
+			else:
+				animated_sprite_2d.flip_h = false
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, SPEED)
 		
@@ -76,9 +79,23 @@ func is_hit(force: Vector2, damage: float) -> void:
 		death_sprite.visible = true
 		dead = true
 		died.emit()
+		call_deferred('disable_hitbox')
 		die(animation_player)
 	else:
 		knockback = force
+		call_deferred('disable_hitbox_for_hit')
 
 func disable_collision() -> void:
 	collision_shape_2d.disabled = true
+	
+func disable_hitbox() -> void:
+	hit_box_collision_shape_2d.disabled = true
+	
+func disable_hitbox_for_hit() -> void:
+	animation_player.play('hit')
+	hit_box_collision_shape_2d.disabled = true
+	hit = true
+	var hit_animation_length: float = animation_player.current_animation_length
+	await get_tree().create_timer(hit_animation_length).timeout
+	hit_box_collision_shape_2d.disabled = false
+	hit = false
