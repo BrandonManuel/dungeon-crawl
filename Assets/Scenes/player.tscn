@@ -1,4 +1,4 @@
-[gd_scene format=3 uid="uid://dc57no77t7pie"]
+[gd_scene format=3 uid="uid://dailuynkumusi"]
 
 [ext_resource type="Script" uid="uid://b5bjd2q3711jh" path="res://Assets/Scripts/player.gd" id="1_38rej"]
 [ext_resource type="Texture2D" uid="uid://bvhogkii5cn2o" path="res://Assets/Sprites/Warrior.png" id="2_t1xgp"]
