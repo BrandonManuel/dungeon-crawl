@@ -29,7 +29,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-9, 7)]
+"values": [Vector2(-10, 6)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -41,7 +41,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [2.5384161]
+"values": [0.0]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -722,6 +722,9 @@ _data = {
 radius = 7.0
 height = 26.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_t1xgp"]
+radius = 22.472204
+
 [node name="Player" type="CharacterBody2D" unique_id=1913849330 groups=["player"]]
 collision_layer = 2
 collision_mask = 3
@@ -749,10 +752,21 @@ position_smoothing_enabled = true
 script = ExtResource("3_23lac")
 
 [node name="Hand" type="Marker2D" parent="." unique_id=859126678]
-position = Vector2(-9, 7)
-rotation = 2.5384161
+position = Vector2(-10, 6)
 
 [node name="Sword" parent="Hand" unique_id=1478424939 instance=ExtResource("4_t1xgp")]
-position = Vector2(-0.56726074, 0.8235378)
+
+[node name="Pick Up Area" type="Area2D" parent="." unique_id=1514889544]
+collision_layer = 2
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pick Up Area" unique_id=1653311228]
+shape = SubResource("CircleShape2D_t1xgp")
+
+[connection signal="animation_finished" from="Visual/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="child_entered_tree" from="Hand" to="." method="_on_hand_child_entered_tree"]
+[connection signal="child_exiting_tree" from="Hand" to="." method="_on_hand_child_exiting_tree"]
+[connection signal="area_entered" from="Pick Up Area" to="." method="_on_pick_up_area_area_entered"]
+[connection signal="area_exited" from="Pick Up Area" to="." method="_on_pick_up_area_area_exited"]
 
 [editable path="Hand/Sword"]
