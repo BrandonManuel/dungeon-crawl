@@ -43,42 +43,6 @@ tracks/2/keys = {
 "update": 0,
 "values": [0.0]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Hand/Sword/Effect/Slash:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(6.550865, -11.273254)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Hand/Sword/Effect/Slash:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [2.1710424]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Hand/Sword/Effect/Slash:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="Animation" id="Animation_w3t24"]
 resource_name = "swing_weapon"
@@ -118,42 +82,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0.0, -0.045378562, -0.11519173, -0.24757767, 2.5384161, 0.0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Hand/Sword/Effect/Slash:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(6.550865, -11.273254)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Hand/Sword/Effect/Slash:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [2.1710424]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Hand/Sword/Effect/Slash:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.125, 0.15757766, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [false, false, false, false, true, false, false]
 }
 
 [sub_resource type="Animation" id="Animation_c3tg1"]
@@ -195,42 +123,6 @@ tracks/2/keys = {
 "update": 1,
 "values": [0.0, -0.045378562, -0.11519173, -0.24757767, 2.5384161, 0.0]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Hand/Sword/Effect/Slash:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(18.551, 1.727)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Hand/Sword/Effect/Slash:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [3.141592653589793]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Hand/Sword/Effect/Slash:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.125, 0.15757766, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [false, false, false, false, true, false, false]
-}
 
 [sub_resource type="Animation" id="Animation_lerqx"]
 resource_name = "attack_down_right"
@@ -270,42 +162,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0.0, -0.045378562, -0.11519173, -0.24757767, 2.5384161, 0.0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Hand/Sword/Effect/Slash:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-7.449, -17.273)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Hand/Sword/Effect/Slash:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [1.2810716709638374]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Hand/Sword/Effect/Slash:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.125, 0.15757766, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [false, false, false, false, true, false, false]
 }
 
 [sub_resource type="Animation" id="Animation_rsrmw"]
@@ -347,42 +203,6 @@ tracks/2/keys = {
 "update": 1,
 "values": [0.0, -0.045378562, -0.11519173, -0.24757767, 2.5384161, 0.0]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Hand/Sword/Effect/Slash:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(12, 16)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Hand/Sword/Effect/Slash:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [3.7524578917878086]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Hand/Sword/Effect/Slash:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.125, 0.15757766, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [false, false, false, false, true, false, false]
-}
 
 [sub_resource type="Animation" id="Animation_o8kuu"]
 resource_name = "attack_right"
@@ -422,42 +242,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0.0, -0.045378562, -0.11519173, -0.24757767, 2.5384161, 0.0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Hand/Sword/Effect/Slash:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-18.449, -7.273)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Hand/Sword/Effect/Slash:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.5934119456780721]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Hand/Sword/Effect/Slash:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.125, 0.15757766, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [false, false, false, false, true, false, false]
 }
 
 [sub_resource type="Animation" id="Animation_jp3cw"]
@@ -499,42 +283,6 @@ tracks/2/keys = {
 "update": 1,
 "values": [0.0, -0.045378562, -0.11519173, -0.24757767, 2.5384161, 0.0]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Hand/Sword/Effect/Slash:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-14.449, 19.727)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Hand/Sword/Effect/Slash:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [5.323254218582705]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Hand/Sword/Effect/Slash:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.125, 0.15757766, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [false, false, false, false, true, false, false]
-}
 
 [sub_resource type="Animation" id="Animation_ecf78"]
 resource_name = "attack_up_left"
@@ -575,42 +323,6 @@ tracks/2/keys = {
 "update": 1,
 "values": [0.0, -0.045378562, -0.11519173, -0.24757767, 2.5384161, 0.0]
 }
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Hand/Sword/Effect/Slash:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-3.449, 22.727)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Hand/Sword/Effect/Slash:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [4.537856055185257]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Hand/Sword/Effect/Slash:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.125, 0.15757766, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [false, false, false, false, true, false, false]
-}
 
 [sub_resource type="Animation" id="Animation_vy5gb"]
 resource_name = "attack_up_right"
@@ -650,42 +362,6 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [0.0, -0.045378562, -0.11519173, -0.24757767, 2.5384161, 0.0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Hand/Sword/Effect/Slash:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-25.449, 1.727)]
-}
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("Hand/Sword/Effect/Slash:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0.15757766),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [6.283185307179586]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("Hand/Sword/Effect/Slash:visible")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.125, 0.15757766, 0.2, 0.4),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
-"update": 1,
-"values": [false, false, false, false, true, false, false]
 }
 
 [sub_resource type="Animation" id="Animation_23lac"]

@@ -48,22 +48,30 @@ func handle_attack(direction: Vector2) -> void:
 		if direction.x == 0:
 			if direction.y >= 0:
 				animation_player.play("attack_down")
+				weapon.get_node('AnimationPlayer').play("attack_down")
 			else:
 				animation_player.play("attack_up")
+				weapon.get_node('AnimationPlayer').play("attack_up")
 		elif direction.x > 0:
 			if direction.y == 0:
 				animation_player.play("attack_right")
+				weapon.get_node('AnimationPlayer').play("attack_right")
 			elif direction.y > 0:
 				animation_player.play("attack_down_right")
+				weapon.get_node('AnimationPlayer').play("attack_down_right")
 			else:
 				animation_player.play("attack_up_right")
+				weapon.get_node('AnimationPlayer').play("attack_up_right")
 		else:
 			if direction.y == 0:
 				animation_player.play("attack_left")
+				weapon.get_node('AnimationPlayer').play("attack_left")
 			elif direction.y > 0:
 				animation_player.play("attack_down_left")
+				weapon.get_node('AnimationPlayer').play("attack_down_left")
 			else:
 				animation_player.play("attack_up_left")
+				weapon.get_node('AnimationPlayer').play("attack_up_left")
 				
 		weapon.attack(self)
 
