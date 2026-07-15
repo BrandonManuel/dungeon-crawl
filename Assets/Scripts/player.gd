@@ -8,7 +8,8 @@ extends CharacterBody2D
 var weapon: Weapon = null
 var last_held_direction: Vector2
 
-const SPEED = 100.0
+const SPEED: float = 100.0
+@export var JOYSTICK_OFFSET: float = .2
 
 var movement_enabled: bool = true
 
@@ -45,33 +46,43 @@ func handle_attack(direction: Vector2) -> void:
 	var attack := Input.is_action_just_pressed("attack")
 	if weapon != null and attack and not (animation_player.is_playing() and animation_player.current_animation.contains("attack")):		
 		movement_enabled = false
-		if direction.x == 0:
-			if direction.y >= 0:
+		#if direction.x == 0  + JOYSTICK_OFFSET:
+			#if direction.y >= 0  + JOYSTICK_OFFSET:
+				#animation_player.play("attack_down")
+				#weapon.get_node('AnimationPlayer').play("attack_down")
+			#else:
+				#animation_player.play("attack_up")
+				#weapon.get_node('AnimationPlayer').play("attack_up")
+		if direction.x > 0  + JOYSTICK_OFFSET:
+			#if direction.y  0  + JOYSTICK_OFFSET:
+				#animation_player.play("attack_right")
+				#weapon.get_node('AnimationPlayer').play("attack_right")
+			if direction.y > 0  + JOYSTICK_OFFSET:
+				animation_player.play("attack_down_right")
+				weapon.get_node('AnimationPlayer').play("attack_down_right")
+			elif direction.y < 0 - JOYSTICK_OFFSET:
+				animation_player.play("attack_up_right")
+				weapon.get_node('AnimationPlayer').play("attack_up_right")
+			else:
+				animation_player.play("attack_right")
+				weapon.get_node('AnimationPlayer').play("attack_right")
+		elif direction.x < 0 - JOYSTICK_OFFSET:
+			if direction.y > 0  + JOYSTICK_OFFSET:
+				animation_player.play("attack_down_left")
+				weapon.get_node('AnimationPlayer').play("attack_down_left")
+			elif direction.y < 0 - JOYSTICK_OFFSET:
+				animation_player.play("attack_up_left")
+				weapon.get_node('AnimationPlayer').play("attack_up_left")
+			else:
+				animation_player.play("attack_left")
+				weapon.get_node('AnimationPlayer').play("attack_left")
+		else:
+			if direction.y >= 0 :
 				animation_player.play("attack_down")
 				weapon.get_node('AnimationPlayer').play("attack_down")
 			else:
 				animation_player.play("attack_up")
 				weapon.get_node('AnimationPlayer').play("attack_up")
-		elif direction.x > 0:
-			if direction.y == 0:
-				animation_player.play("attack_right")
-				weapon.get_node('AnimationPlayer').play("attack_right")
-			elif direction.y > 0:
-				animation_player.play("attack_down_right")
-				weapon.get_node('AnimationPlayer').play("attack_down_right")
-			else:
-				animation_player.play("attack_up_right")
-				weapon.get_node('AnimationPlayer').play("attack_up_right")
-		else:
-			if direction.y == 0:
-				animation_player.play("attack_left")
-				weapon.get_node('AnimationPlayer').play("attack_left")
-			elif direction.y > 0:
-				animation_player.play("attack_down_left")
-				weapon.get_node('AnimationPlayer').play("attack_down_left")
-			else:
-				animation_player.play("attack_up_left")
-				weapon.get_node('AnimationPlayer').play("attack_up_left")
 				
 		weapon.attack(self)
 
