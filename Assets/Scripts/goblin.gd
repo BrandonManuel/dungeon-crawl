@@ -63,12 +63,12 @@ func _physics_process(delta: float) -> void:
 	
 
 func _on_hit_box_body_entered(body: Node2D) -> void:
-	if body.is_in_group('player'):
+	if not dead and body.is_in_group('player'):
 		print("hitting player")
 
 
 func _on_hit_box_body_exited(body: Node2D) -> void:
-	if body.is_in_group('player'):
+	if not dead and body.is_in_group('player'):
 		print("no longer hitting player")
 
 func is_hit(force: Vector2, damage: float) -> void:
