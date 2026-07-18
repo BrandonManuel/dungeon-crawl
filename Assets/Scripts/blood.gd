@@ -12,6 +12,5 @@ func _process(delta: float) -> void:
 
 
 func _on_goblin_died() -> void:
-	print('dead')
 	visible = true
 	emitting = true

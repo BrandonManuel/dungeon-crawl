@@ -49,3 +49,7 @@ func on_state_transition(state: State, new_state_name: String) -> void :
 	new_state.enter()
 	
 	current_state = new_state
+
+
+func _on_enemy_dead() -> void:
+	current_state.Transitioned.emit(current_state, "dead")

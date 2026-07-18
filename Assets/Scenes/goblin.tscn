@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://cty01k8qiam15" path="res://Assets/Scripts/state_machine.gd" id="5_dcbak"]
 [ext_resource type="PackedScene" uid="uid://cntwd68i1o8eh" path="res://Assets/Scenes/States/Enemies/follow.tscn" id="6_ubkd7"]
 [ext_resource type="PackedScene" uid="uid://cgi3mx43080ts" path="res://Assets/Scenes/States/Enemies/idle.tscn" id="7_1w856"]
+[ext_resource type="PackedScene" uid="uid://cuto1lb5ainnq" path="res://Assets/Scenes/States/Enemies/dead.tscn" id="8_05lo6"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_of3jj"]
 radius = 9.0
@@ -171,9 +172,10 @@ script = ExtResource("4_suboo")
 
 [node name="StateMachine" type="Node" parent="." unique_id=2009988429 node_paths=PackedStringArray("enemy")]
 script = ExtResource("5_dcbak")
-states_scenes = Array[PackedScene]([ExtResource("7_1w856"), ExtResource("6_ubkd7")])
+states_scenes = Array[PackedScene]([ExtResource("7_1w856"), ExtResource("6_ubkd7"), ExtResource("8_05lo6")])
 enemy = NodePath("..")
 
 [connection signal="died" from="." to="DeathSprite/CPUParticles2D" method="_on_goblin_died"]
+[connection signal="died" from="." to="StateMachine" method="_on_enemy_dead"]
 [connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]
 [connection signal="body_exited" from="HitBox" to="." method="_on_hit_box_body_exited"]

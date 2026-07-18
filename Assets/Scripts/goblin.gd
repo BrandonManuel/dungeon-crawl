@@ -18,6 +18,8 @@ var players: Array[CharacterBody2D]
 
 var hit: bool = false
 var dead: bool = false
+
+signal was_hit
 signal died
 
 func _ready() -> void:
@@ -49,14 +51,11 @@ func _on_hit_box_body_exited(body: Node2D) -> void:
 func is_hit(force: Vector2, damage: float) -> void:
 	health -= damage
 	if health <= 0:
-		call_deferred('disable_collision')
-		animated_sprite_2d.visible = false
-		death_sprite.visible = true
-		dead = true
 		died.emit()
+		call_deferred('disable_collision')
 		call_deferred('disable_hitbox')
-		die(animation_player)
 	else:
+		was_hit.emit()
 		knockback = force
 		call_deferred('disable_hitbox_for_hit')
 
