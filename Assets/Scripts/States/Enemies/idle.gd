@@ -38,10 +38,10 @@ func physics_process(delta: float) -> void:
 		else:
 			enemy.animated_sprite_2d.flip_h = false
 
-	for player in players:
-		var distance = player.global_position - enemy.global_position
-		if distance.length() < START_FOLLOWING_DISTANCE:
-			Transitioned.emit(self, "Follow")
+	#for player in players:
+		#var distance = player.global_position - enemy.global_position
+		#if distance.length() < START_FOLLOWING_DISTANCE:
+			#Transitioned.emit(self, "Follow")
 		
 func enter() -> void:
 	var player_nodes = get_tree().get_nodes_in_group('player')

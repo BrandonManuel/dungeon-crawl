@@ -1,6 +1,0 @@
-[gd_scene format=3 uid="uid://cntwd68i1o8eh"]
-
-[ext_resource type="Script" uid="uid://bkvhkx2j0f8uk" path="res://Assets/Scripts/States/Enemies/follow.gd" id="1_l7pxm"]
-
-[node name="FollowState" type="Node" unique_id=1153714610]
-script = ExtResource("1_l7pxm")

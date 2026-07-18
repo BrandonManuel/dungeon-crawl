@@ -7,6 +7,7 @@ extends Enemy
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var hit_box_collision_shape_2d: CollisionShape2D = $HitBox/CollisionShape2D
 @onready var state_machine: StateMachine = $StateMachine
+@onready var detection_radius: Area2D = $DetectionRadius
 
 @export var KNOCKBACK_DECAY: float = 0.0
 

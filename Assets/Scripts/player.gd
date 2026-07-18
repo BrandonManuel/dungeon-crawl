@@ -1,5 +1,7 @@
 extends CharacterBody2D
 
+class_name Player
+
 @onready var hand: Marker2D = $Hand
 @onready var animation_player: AnimationPlayer = $Visual/AnimationPlayer
 

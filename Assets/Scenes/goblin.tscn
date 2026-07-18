@@ -3,11 +3,12 @@
 [ext_resource type="Script" uid="uid://b7nbiewccwujs" path="res://Assets/Scripts/goblin.gd" id="1_tjamc"]
 [ext_resource type="Texture2D" uid="uid://ccny13nc4ouwn" path="res://Assets/Sprites/Goblin_Looking_Down.png" id="2_suboo"]
 [ext_resource type="Texture2D" uid="uid://yh8ex10jlntt" path="res://Assets/Sprites/Goblin_Looking_Up.png" id="3_dcbak"]
+[ext_resource type="Script" uid="uid://bsawv0r2xmt6q" path="res://Assets/Scripts/node_2d_tracking_navigation_agent_2d.gd" id="4_nb4yb"]
 [ext_resource type="Script" uid="uid://dicehix582buy" path="res://Assets/Scripts/blood.gd" id="4_suboo"]
 [ext_resource type="Script" uid="uid://cty01k8qiam15" path="res://Assets/Scripts/state_machine.gd" id="5_dcbak"]
-[ext_resource type="PackedScene" uid="uid://cntwd68i1o8eh" path="res://Assets/Scenes/States/Enemies/follow.tscn" id="6_ubkd7"]
-[ext_resource type="PackedScene" uid="uid://cgi3mx43080ts" path="res://Assets/Scenes/States/Enemies/idle.tscn" id="7_1w856"]
-[ext_resource type="PackedScene" uid="uid://cuto1lb5ainnq" path="res://Assets/Scenes/States/Enemies/dead.tscn" id="8_05lo6"]
+[ext_resource type="Script" uid="uid://d0eatrres1a46" path="res://Assets/Scripts/States/Enemies/idle.gd" id="7_nb4yb"]
+[ext_resource type="Script" uid="uid://bkvhkx2j0f8uk" path="res://Assets/Scripts/States/Enemies/follow.gd" id="8_yhjar"]
+[ext_resource type="Script" uid="uid://gmtuu6n2tqwy" path="res://Assets/Scripts/States/Enemies/dead.gd" id="9_qbr7n"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_of3jj"]
 radius = 9.0
@@ -116,6 +117,9 @@ _data = {
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.5005848, 0), 0.0, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_cea73"]
+radius = 93.13431
+
 [node name="Goblin" type="CharacterBody2D" unique_id=489501098 groups=["enemies"]]
 collision_layer = 4
 collision_mask = 5
@@ -139,6 +143,8 @@ shape = SubResource("CapsuleShape2D_tjamc")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=216658786]
 path_desired_distance = 5.0
 target_desired_distance = 5.0
+debug_enabled = true
+script = ExtResource("4_nb4yb")
 
 [node name="HurtBox" type="Area2D" parent="." unique_id=1943817656]
 
@@ -171,10 +177,21 @@ script = ExtResource("4_suboo")
 
 [node name="StateMachine" type="Node" parent="." unique_id=2009988429 node_paths=PackedStringArray("enemy")]
 script = ExtResource("5_dcbak")
-states_scenes = Array[PackedScene]([ExtResource("7_1w856"), ExtResource("6_ubkd7"), ExtResource("8_05lo6")])
+states_scenes = Array[GDScript]([ExtResource("7_nb4yb"), ExtResource("8_yhjar"), ExtResource("9_qbr7n")])
 enemy = NodePath("..")
+
+[node name="DetectionRadius" type="Area2D" parent="." unique_id=532807893]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectionRadius" unique_id=2043285002]
+shape = SubResource("CircleShape2D_cea73")
+
+[node name="RayCast2D" type="RayCast2D" parent="DetectionRadius" unique_id=1182987552]
+collision_mask = 3
 
 [connection signal="died" from="." to="DeathSprite/CPUParticles2D" method="_on_goblin_died"]
 [connection signal="died" from="." to="StateMachine" method="_on_enemy_dead"]
 [connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]
 [connection signal="body_exited" from="HitBox" to="." method="_on_hit_box_body_exited"]
+[connection signal="body_entered" from="DetectionRadius" to="StateMachine" method="_on_detection_radius_body_entered"]
+[connection signal="body_exited" from="DetectionRadius" to="StateMachine" method="_on_detection_radius_body_exited"]
