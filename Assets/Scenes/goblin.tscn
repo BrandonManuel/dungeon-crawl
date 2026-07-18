@@ -4,6 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://ccny13nc4ouwn" path="res://Assets/Sprites/Goblin_Looking_Down.png" id="2_suboo"]
 [ext_resource type="Texture2D" uid="uid://yh8ex10jlntt" path="res://Assets/Sprites/Goblin_Looking_Up.png" id="3_dcbak"]
 [ext_resource type="Script" uid="uid://dicehix582buy" path="res://Assets/Scripts/blood.gd" id="4_suboo"]
+[ext_resource type="Script" uid="uid://cty01k8qiam15" path="res://Assets/Scripts/state_machine.gd" id="5_dcbak"]
+[ext_resource type="PackedScene" uid="uid://cntwd68i1o8eh" path="res://Assets/Scenes/States/Enemies/follow.tscn" id="6_ubkd7"]
+[ext_resource type="PackedScene" uid="uid://cgi3mx43080ts" path="res://Assets/Scenes/States/Enemies/idle.tscn" id="7_1w856"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_of3jj"]
 radius = 9.0
@@ -22,7 +25,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hni1o")
 }],
-"loop": true,
+"loop": 1,
 "name": &"move_down",
 "speed": 5.0
 }, {
@@ -30,7 +33,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_iusbg")
 }],
-"loop": true,
+"loop": 1,
 "name": &"move_up",
 "speed": 5.0
 }]
@@ -135,6 +138,7 @@ shape = SubResource("CapsuleShape2D_tjamc")
 [node name="NavigationAgent2D" type="NavigationAgent2D" parent="." unique_id=216658786]
 path_desired_distance = 5.0
 target_desired_distance = 5.0
+debug_enabled = true
 
 [node name="HurtBox" type="Area2D" parent="." unique_id=1943817656]
 
@@ -164,6 +168,11 @@ scale_amount_max = 4.0
 scale_amount_curve = SubResource("Curve_dcbak")
 color = Color(1, 0, 0, 1)
 script = ExtResource("4_suboo")
+
+[node name="StateMachine" type="Node" parent="." unique_id=2009988429 node_paths=PackedStringArray("enemy")]
+script = ExtResource("5_dcbak")
+states_scenes = Array[PackedScene]([ExtResource("7_1w856"), ExtResource("6_ubkd7")])
+enemy = NodePath("..")
 
 [connection signal="died" from="." to="DeathSprite/CPUParticles2D" method="_on_goblin_died"]
 [connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_body_entered"]

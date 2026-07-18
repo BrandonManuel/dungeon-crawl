@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 class_name Enemy
 
+@export var SPEED = 10.0
 func die(animation_player: AnimationPlayer) -> void:
 	animation_player.play('die')
 	var death_animation_length: float = animation_player.current_animation_length * 2

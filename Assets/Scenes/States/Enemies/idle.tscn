@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cgi3mx43080ts"]
+
+[ext_resource type="Script" uid="uid://d0eatrres1a46" path="res://Assets/Scripts/States/Enemies/idle.gd" id="1_pvtif"]
+
+[node name="Idle" type="Node" unique_id=2072641320]
+script = ExtResource("1_pvtif")

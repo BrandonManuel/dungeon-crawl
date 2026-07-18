@@ -6,13 +6,13 @@ extends Enemy
 @onready var death_sprite: Sprite2D = $DeathSprite
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var hit_box_collision_shape_2d: CollisionShape2D = $HitBox/CollisionShape2D
+@onready var state_machine: StateMachine = $StateMachine
 
 @export var KNOCKBACK_DECAY: float = 0.0
 
 @export var health: float = 20.0
 
 var knockback: Vector2
-const SPEED = 10.0
 
 var players: Array[CharacterBody2D]
 
@@ -24,41 +24,16 @@ func _ready() -> void:
 	var player_nodes = get_tree().get_nodes_in_group('player')
 	for player_node in player_nodes:
 		players.push_back(player_node as CharacterBody2D)
+		
+	return
 
 func _physics_process(delta: float) -> void:
 	if dead:
 		return
 		
-	var target: Vector2
-	var current_closest_player_distance: int
-	for player in players:
-		var distance: float = global_position.distance_to(player.global_position)
-		if target == Vector2.ZERO or distance < current_closest_player_distance:
-			current_closest_player_distance = distance
-			target = player.global_position
-			
-	if target != null:
-		navigation_agent_2d.target_position = target
-		var next_path_pos := navigation_agent_2d.get_next_path_position()
-		var direction: Vector2 = global_position.direction_to(next_path_pos)
-		var walk_velocity: Vector2 = direction * SPEED
-		
-		knockback = knockback.move_toward(Vector2.ZERO, KNOCKBACK_DECAY * delta)
-		
-		velocity = walk_velocity + knockback
-
-		if !hit:
-			if direction.y < 0:
-				animated_sprite_2d.play("move_up")
-			else:
-				animated_sprite_2d.play("move_down")
-			if direction.x < 0:
-				animated_sprite_2d.flip_h = true
-			else:
-				animated_sprite_2d.flip_h = false
-	else:
-		velocity = velocity.move_toward(Vector2.ZERO, SPEED)
-		
+	if state_machine.current_state:
+		state_machine.current_state.physics_process(delta)
+	
 	move_and_slide()
 	
 
