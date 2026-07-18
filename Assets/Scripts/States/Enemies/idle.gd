@@ -16,6 +16,7 @@ func _init() -> void:
 func randomize_wander():
 	move_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
 	wander_time = randf_range(1, 3)
+		
 	
 func process(delta: float) -> void:
 	if wander_time > 0:
@@ -27,6 +28,15 @@ func physics_process(delta: float) -> void:
 	if enemy:
 		enemy.velocity = move_direction * enemy.SPEED
 		
+		if move_direction.y < 0:
+			enemy.animated_sprite_2d.play("move_up")
+		else:
+			enemy.animated_sprite_2d.play("move_down")
+			
+		if move_direction.x < 0:
+			enemy.animated_sprite_2d.flip_h = true
+		else:
+			enemy.animated_sprite_2d.flip_h = false
 
 	for player in players:
 		var distance = player.global_position - enemy.global_position
