@@ -34,6 +34,11 @@ func _process(delta: float) -> void:
 
 
 func  _physics_process(delta: float) -> void:
+#	dead is a terminal state
+	if current_state.state_name.to_lower() == 'dead':
+		current_state.physics_process(delta)
+		return
+		
 	if player_target and current_state.state_name.to_lower() != "follow":
 		var sight_line: RayCast2D = enemy.get_node("DetectionRadius").get_node("RayCast2D")
 		sight_line.global_position = enemy.global_position
