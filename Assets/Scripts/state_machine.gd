@@ -77,12 +77,18 @@ func on_state_transition(state: State, new_state_name: String) -> void :
 	var new_state = states.get(new_state_name.to_lower())
 	if !new_state:
 		return
-	
+			
 #	if going from attack to follow, finish attack first
 	if state.state_name == 'attack' and new_state_name == 'follow':
 		var attack_animation_length: float = enemy.animation_player.current_animation_length - enemy.animation_player.current_animation_position
 		await get_tree().create_timer(attack_animation_length).timeout
-		
+		#	only go from attack to follow if enemy is still outside of attack range
+		var attack_range: Area2D = enemy.get_node('AttackRange')
+		var overlapping_bodies = attack_range.get_overlapping_bodies()
+		for body in overlapping_bodies:
+			if body is Player:
+				return
+				
 	if current_state:
 		current_state.exit()
 
@@ -108,7 +114,8 @@ func _on_detection_radius_body_exited(body: Node2D) -> void:
 # start attacking when player enters attack range
 func _on_attack_range_body_entered(body: Node2D) -> void:
 	if not enemy.dead and body.is_in_group("player"):
-		enemy.attack_targets.push_back(body)
+		if enemy not in enemy.attack_targets:
+			enemy.attack_targets.push_back(body)
 		current_state.Transitioned.emit(current_state, "attack")
 
 # stop attacking when player leaves attack range

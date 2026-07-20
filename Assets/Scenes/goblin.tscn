@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b7nbiewccwujs" path="res://Assets/Scripts/goblin.gd" id="1_tjamc"]
 [ext_resource type="Texture2D" uid="uid://c3nps74hib3ho" path="res://Assets/Sprites/Goblin.png" id="2_nb4yb"]
-[ext_resource type="Script" uid="uid://bsawv0r2xmt6q" path="res://Assets/Scripts/node_2d_tracking_navigation_agent_2d.gd" id="4_nb4yb"]
+[ext_resource type="Script" path="res://Assets/Scripts/node_2d_tracking_navigation_agent_2d.gd" id="4_nb4yb"]
 [ext_resource type="Script" uid="uid://dicehix582buy" path="res://Assets/Scripts/blood.gd" id="4_suboo"]
 [ext_resource type="Script" uid="uid://cty01k8qiam15" path="res://Assets/Scripts/state_machine.gd" id="5_dcbak"]
 [ext_resource type="Script" uid="uid://d0eatrres1a46" path="res://Assets/Scripts/States/Enemies/idle.gd" id="7_nb4yb"]
