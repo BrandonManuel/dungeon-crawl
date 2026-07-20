@@ -9,12 +9,8 @@ func process(delta: float) -> void:
 	return
 	
 func physics_process(delta: float) -> void:
-	enemy.velocity = Vector2.ZERO
 	enemy.knockback = enemy.knockback.move_toward(Vector2.ZERO, enemy.KNOCKBACK_DECAY * delta)
-	var next_path_pos := enemy.navigation_agent_2d.get_next_path_position()
-	var direction: Vector2 = enemy.global_position.direction_to(next_path_pos)
-	var walk_velocity: Vector2 = direction * enemy.SPEED	
-	enemy.velocity = walk_velocity + enemy.knockback
+	enemy.velocity = enemy.knockback
 	if enemy.animation_player.current_animation == 'attack' and enemy.animation_player.is_playing():
 		return
 	

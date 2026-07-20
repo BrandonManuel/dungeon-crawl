@@ -40,7 +40,7 @@ func _physics_process(delta: float) -> void:
 		
 	if state_machine:
 		state_machine.physics_process(delta)
-	
+		
 	move_and_slide()
 	
 func is_hit(force: Vector2, damage: float) -> void:

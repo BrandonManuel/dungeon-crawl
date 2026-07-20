@@ -450,6 +450,9 @@ radius = 93.13431
 [sub_resource type="CircleShape2D" id="CircleShape2D_yhjar"]
 radius = 16.0
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_n3wst"]
+radius = 16.0
+
 [node name="Goblin" type="CharacterBody2D" unique_id=489501098 groups=["enemies"]]
 collision_layer = 4
 collision_mask = 5
@@ -489,6 +492,7 @@ libraries/ = SubResource("AnimationLibrary_suboo")
 
 [node name="DeathSprite" type="Sprite2D" parent="." unique_id=735471569]
 visible = false
+position = Vector2(0, 8)
 texture = ExtResource("2_nb4yb")
 region_enabled = true
 region_rect = Rect2(2, 16, 20, 16)
@@ -540,9 +544,16 @@ collision_mask = 2
 position = Vector2(-24, -1)
 shape = SubResource("CircleShape2D_yhjar")
 
+[node name="LeaveAttackRange" type="Area2D" parent="." unique_id=1643789688]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="LeaveAttackRange" unique_id=1513094569]
+shape = SubResource("CircleShape2D_n3wst")
+
 [connection signal="died" from="." to="StateMachine" method="_on_enemy_dead"]
 [connection signal="was_hit" from="." to="." method="_on_was_hit"]
 [connection signal="body_entered" from="AttackRange" to="StateMachine" method="_on_attack_range_body_entered"]
-[connection signal="body_exited" from="AttackRange" to="StateMachine" method="_on_attack_range_body_exited"]
 [connection signal="body_entered" from="DetectionRadius" to="StateMachine" method="_on_detection_radius_body_entered"]
 [connection signal="body_exited" from="DetectionRadius" to="StateMachine" method="_on_detection_radius_body_exited"]
+[connection signal="body_exited" from="LeaveAttackRange" to="StateMachine" method="_on_leave_attack_range_body_exited"]

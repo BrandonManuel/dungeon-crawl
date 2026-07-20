@@ -32,16 +32,16 @@ tile_set = SubResource("TileSet_of3jj")
 [node name="Enemies" type="Node" parent="." unique_id=1705692595]
 
 [node name="Goblin" parent="Enemies" unique_id=863396306 instance=ExtResource("1_pb48a")]
-position = Vector2(4, 160)
+position = Vector2(170, -159)
 
-[node name="Goblin2" parent="Enemies" unique_id=327641068 instance=ExtResource("1_pb48a")]
-position = Vector2(263, -4)
+[node name="Goblin2" parent="Enemies" unique_id=489501098 instance=ExtResource("1_pb48a")]
+position = Vector2(-187, -90)
 
-[node name="Goblin3" parent="Enemies" unique_id=1042688859 instance=ExtResource("1_pb48a")]
-position = Vector2(119, -147)
+[node name="Goblin3" parent="Enemies" unique_id=1877367559 instance=ExtResource("1_pb48a")]
+position = Vector2(-213, 130)
 
-[node name="Goblin4" parent="Enemies" unique_id=747626369 instance=ExtResource("1_pb48a")]
-position = Vector2(-228, -77)
+[node name="Goblin4" parent="Enemies" unique_id=853434177 instance=ExtResource("1_pb48a")]
+position = Vector2(134, 42)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1337511773]
 stream = ExtResource("1_lcp10")

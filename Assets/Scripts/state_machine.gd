@@ -77,6 +77,11 @@ func on_state_transition(state: State, new_state_name: String) -> void :
 	var new_state = states.get(new_state_name.to_lower())
 	if !new_state:
 		return
+	
+#	if going from attack to follow, finish attack first
+	if state.state_name == 'attack' and new_state_name == 'follow':
+		var attack_animation_length: float = enemy.animation_player.current_animation_length - enemy.animation_player.current_animation_position
+		await get_tree().create_timer(attack_animation_length).timeout
 		
 	if current_state:
 		current_state.exit()
@@ -107,7 +112,7 @@ func _on_attack_range_body_entered(body: Node2D) -> void:
 		current_state.Transitioned.emit(current_state, "attack")
 
 # stop attacking when player leaves attack range
-func _on_attack_range_body_exited(body: Node2D) -> void:
+func _on_leave_attack_range_body_exited(body: Node2D) -> void:
 	if not enemy.dead and body.is_in_group('player') and body in enemy.attack_targets:
 		enemy.attack_targets.remove_at(enemy.attack_targets.find(body))
 		if enemy.attack_targets.size() == 0:
