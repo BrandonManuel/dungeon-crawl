@@ -29,19 +29,16 @@ func physics_process(delta: float) -> void:
 		enemy.velocity = move_direction * enemy.SPEED
 		
 		if move_direction.y < 0:
-			enemy.animated_sprite_2d.play("move_up")
+			enemy.animation_player.play("move_up")
 		else:
-			enemy.animated_sprite_2d.play("move_down")
+			enemy.animation_player.play("move_down")
 			
 		if move_direction.x < 0:
-			enemy.animated_sprite_2d.flip_h = true
+			enemy.sprite_2d.flip_h = true
+			enemy.attack_sprite_2d.flip_h = true
 		else:
-			enemy.animated_sprite_2d.flip_h = false
-
-	#for player in players:
-		#var distance = player.global_position - enemy.global_position
-		#if distance.length() < START_FOLLOWING_DISTANCE:
-			#Transitioned.emit(self, "Follow")
+			enemy.sprite_2d.flip_h = false
+			enemy.attack_sprite_2d.flip_h = false
 		
 func enter() -> void:
 	var player_nodes = get_tree().get_nodes_in_group('player')

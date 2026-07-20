@@ -40,13 +40,15 @@ func physics_process(delta: float) -> void:
 
 		if !enemy.hit:
 			if direction.y < 0:
-				enemy.animated_sprite_2d.play("move_up")
+				enemy.animation_player.play("move_up")
 			else:
-				enemy.animated_sprite_2d.play("move_down")
+				enemy.animation_player.play("move_down")
 			if direction.x < 0:
-				enemy.animated_sprite_2d.flip_h = true
+				enemy.sprite_2d.flip_h = true
+				enemy.attack_sprite_2d.flip_h = true
 			else:
-				enemy.animated_sprite_2d.flip_h = false
+				enemy.sprite_2d.flip_h = false
+				enemy.attack_sprite_2d.flip_h = false
 	else:
 		Transitioned.emit(self, "idle")
 		

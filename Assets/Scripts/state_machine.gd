@@ -11,6 +11,8 @@ var current_state: State
 
 var states: Dictionary = {}
 
+var initial_speed: float
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	var initial_state: State
@@ -24,22 +26,29 @@ func _ready() -> void:
 			if initial_state == null:
 				initial_state = state
 				
+	if enemy:
+		initial_speed = enemy.SPEED
+		
 	initial_state.enter()
 	current_state = initial_state
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func process(delta: float) -> void:
 	if current_state:
 		current_state.process(delta)
 
 
-func  _physics_process(delta: float) -> void:
+func physics_process(delta: float) -> void:
+	if !current_state:
+		return
+		
 #	dead is a terminal state
 	if current_state.state_name.to_lower() == 'dead':
 		current_state.physics_process(delta)
 		return
 		
-	if player_target and current_state.state_name.to_lower() != "follow":
+#	follow player if there is a player target, player is in sightline, and I am not currently attacking nor following
+	if player_target and current_state.state_name.to_lower() != "follow" and not current_state.state_name.to_lower().contains( "attack"):
 		var sight_line: RayCast2D = enemy.get_node("DetectionRadius").get_node("RayCast2D")
 		sight_line.global_position = enemy.global_position
 		sight_line.target_position = player_target.global_position - enemy.global_position
@@ -47,16 +56,21 @@ func  _physics_process(delta: float) -> void:
 		var navigation_agent_2d = enemy.get_node("NavigationAgent2D") as Node2DTrackingNavigationAgent2D
 		if collider is Player:
 			current_state.Transitioned.emit(current_state, "follow")
+#	idle if no player target and I am currently following
 	elif not player_target and current_state.state_name.to_lower() == "follow":
 		var navigation_agent_2d: Node2DTrackingNavigationAgent2D = enemy.get_node("NavigationAgent2D")
 		if navigation_agent_2d.node_target is Player:	
 			current_state.Transitioned.emit(current_state, "idle")
 			
-	if current_state:
-		current_state.physics_process(delta)
+	current_state.physics_process(delta)
 
 func on_state_transition(state: State, new_state_name: String) -> void :
-	print('CHANGING FROM ', state.state_name, ' TO ', new_state_name)
+	if state.state_name == new_state_name:
+		return
+		
+	if enemy.dead:
+		return
+		
 	if state != current_state:
 		return
 		
@@ -68,10 +82,11 @@ func on_state_transition(state: State, new_state_name: String) -> void :
 		current_state.exit()
 
 	new_state.enter()
-	
+	print('CHANGING FROM ', state.state_name, ' TO ', new_state_name)
 	current_state = new_state
 
 
+# signals overwrite state immediately - normal state machine transitions do not apply
 func _on_enemy_dead() -> void:
 	current_state.Transitioned.emit(current_state, "dead")
 
@@ -84,3 +99,16 @@ func _on_detection_radius_body_entered(body: Node2D) -> void:
 func _on_detection_radius_body_exited(body: Node2D) -> void:
 	if player_target == body:
 		player_target = null
+	
+# start attacking when player enters attack range
+func _on_attack_range_body_entered(body: Node2D) -> void:
+	if not enemy.dead and body.is_in_group("player"):
+		enemy.attack_targets.push_back(body)
+		current_state.Transitioned.emit(current_state, "attack")
+
+# stop attacking when player leaves attack range
+func _on_attack_range_body_exited(body: Node2D) -> void:
+	if not enemy.dead and body.is_in_group('player') and body in enemy.attack_targets:
+		enemy.attack_targets.remove_at(enemy.attack_targets.find(body))
+		if enemy.attack_targets.size() == 0:
+			current_state.Transitioned.emit(current_state, "follow")

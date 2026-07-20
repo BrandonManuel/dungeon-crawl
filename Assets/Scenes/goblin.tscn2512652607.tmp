@@ -106,30 +106,6 @@ tracks/6/keys = {
 "update": 0,
 "values": [10.0]
 }
-tracks/7/type = "value"
-tracks/7/imported = false
-tracks/7/enabled = true
-tracks/7/path = NodePath("DeathSprite/CPUParticles2D:visible")
-tracks/7/interp = 1
-tracks/7/loop_wrap = true
-tracks/7/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/8/type = "value"
-tracks/8/imported = false
-tracks/8/enabled = true
-tracks/8/path = NodePath("DeathSprite/CPUParticles2D:emitting")
-tracks/8/interp = 1
-tracks/8/loop_wrap = true
-tracks/8/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="Animation" id="Animation_yhjar"]
 resource_name = "attack_down"
@@ -261,42 +237,6 @@ tracks/3/keys = {
 "update": 0,
 "values": [0.0]
 }
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("DeathSprite/CPUParticles2D:visible")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/5/type = "value"
-tracks/5/imported = false
-tracks/5/enabled = true
-tracks/5/path = NodePath("DeathSprite/CPUParticles2D:emitting")
-tracks/5/interp = 1
-tracks/5/loop_wrap = true
-tracks/5/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/6/type = "value"
-tracks/6/imported = false
-tracks/6/enabled = true
-tracks/6/path = NodePath("Attack:visible")
-tracks/6/interp = 1
-tracks/6/loop_wrap = true
-tracks/6/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
 
 [sub_resource type="Animation" id="Animation_dcbak"]
 resource_name = "hit"
@@ -311,42 +251,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 1,
 "values": [true, false, true, false, true]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Attack:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Sprite2D:frame")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [0]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Attack/Hitbox/CollisionShape2D:disabled")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
 }
 
 [sub_resource type="Animation" id="Animation_nb4yb"]
@@ -364,30 +268,6 @@ tracks/0/keys = {
 "update": 1,
 "values": [0]
 }
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Attack:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Attack/Hitbox/CollisionShape2D:disabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
 
 [sub_resource type="Animation" id="Animation_qbr7n"]
 resource_name = "move_up"
@@ -403,30 +283,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [4]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Attack:visible")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Attack/Hitbox/CollisionShape2D:disabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_suboo"]
@@ -448,7 +304,7 @@ point_count = 2
 radius = 93.13431
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_yhjar"]
-radius = 16.0
+radius = 15.0
 
 [node name="Goblin" type="CharacterBody2D" unique_id=489501098 groups=["enemies"]]
 collision_layer = 4
@@ -496,7 +352,6 @@ region_rect = Rect2(2, 16, 20, 16)
 [node name="CPUParticles2D" type="CPUParticles2D" parent="DeathSprite" unique_id=2114984392]
 visible = false
 position = Vector2(0, -9)
-emitting = false
 amount = 30
 lifetime = 0.36
 spread = 180.0
@@ -531,18 +386,18 @@ texture = ExtResource("10_qbr7n")
 region_enabled = true
 region_rect = Rect2(-18, 0, 28, 16)
 
-[node name="Hitbox" type="Area2D" parent="Attack" unique_id=1683781459 groups=["damage"]]
+[node name="Hitbox" type="Area2D" parent="Attack" unique_id=1683781459]
 position = Vector2(24, -3)
-collision_layer = 4
-collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Attack/Hitbox" unique_id=923136859]
 position = Vector2(-24, -1)
 shape = SubResource("CircleShape2D_yhjar")
 
+[connection signal="died" from="." to="DeathSprite/CPUParticles2D" method="_on_goblin_died"]
 [connection signal="died" from="." to="StateMachine" method="_on_enemy_dead"]
-[connection signal="was_hit" from="." to="." method="_on_was_hit"]
 [connection signal="body_entered" from="AttackRange" to="StateMachine" method="_on_attack_range_body_entered"]
 [connection signal="body_exited" from="AttackRange" to="StateMachine" method="_on_attack_range_body_exited"]
 [connection signal="body_entered" from="DetectionRadius" to="StateMachine" method="_on_detection_radius_body_entered"]
 [connection signal="body_exited" from="DetectionRadius" to="StateMachine" method="_on_detection_radius_body_exited"]
+[connection signal="body_entered" from="Attack/Hitbox" to="StateMachine" method="_on_hitbox_body_entered"]
+[connection signal="body_exited" from="Attack/Hitbox" to="StateMachine" method="_on_hitbox_body_exited"]

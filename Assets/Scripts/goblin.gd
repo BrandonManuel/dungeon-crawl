@@ -1,24 +1,18 @@
 extends Enemy
 
-@onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
-@onready var navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
+@onready var goblin_navigation_agent_2d: NavigationAgent2D = $NavigationAgent2D
 @onready var death_sprite: Sprite2D = $DeathSprite
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var hit_box_collision_shape_2d: CollisionShape2D = $HitBox/CollisionShape2D
+@onready var goblin_animation_player: AnimationPlayer = $AnimationPlayer
+@onready var attack_range_collision_shape_2d: CollisionShape2D = $AttackRange/CollisionShape2D
+@onready var goblin_sprite_2d: Sprite2D = $Sprite2D
+@onready var attack_sprite_2d: Sprite2D = $Attack
 @onready var state_machine: StateMachine = $StateMachine
 @onready var detection_radius: Area2D = $DetectionRadius
-
-@export var KNOCKBACK_DECAY: float = 0.0
-
-@export var health: float = 20.0
 
 var knockback: Vector2
 
 var players: Array[CharacterBody2D]
-
-var hit: bool = false
-var dead: bool = false
 
 signal was_hit
 signal died
@@ -28,49 +22,44 @@ func _ready() -> void:
 	for player_node in player_nodes:
 		players.push_back(player_node as CharacterBody2D)
 		
+	animation_player = goblin_animation_player
+	navigation_agent_2d = goblin_navigation_agent_2d
+	sprite_2d = goblin_sprite_2d
 	return
 
+func _process(delta: float) -> void:
+	if dead:
+		return
+		
+	if state_machine:
+		state_machine.process(delta)
+		
 func _physics_process(delta: float) -> void:
 	if dead:
 		return
 		
-	if state_machine.current_state:
-		state_machine.current_state.physics_process(delta)
+	if state_machine:
+		state_machine.physics_process(delta)
 	
 	move_and_slide()
 	
-
-func _on_hit_box_body_entered(body: Node2D) -> void:
-	if not dead and body.is_in_group('player'):
-		print("hitting player")
-
-
-func _on_hit_box_body_exited(body: Node2D) -> void:
-	if not dead and body.is_in_group('player'):
-		print("no longer hitting player")
-
 func is_hit(force: Vector2, damage: float) -> void:
 	health -= damage
 	if health <= 0:
 		died.emit()
-		call_deferred('disable_collision')
-		call_deferred('disable_hitbox')
 	else:
-		was_hit.emit()
-		knockback = force
-		call_deferred('disable_hitbox_for_hit')
+		was_hit.emit(force)
 
 func disable_collision() -> void:
 	collision_shape_2d.disabled = true
 	
 func disable_hitbox() -> void:
-	hit_box_collision_shape_2d.disabled = true
-	
-func disable_hitbox_for_hit() -> void:
-	animation_player.play('hit')
-	hit_box_collision_shape_2d.disabled = true
-	hit = true
+	attack_range_collision_shape_2d.disabled = true
+
+func _on_was_hit(force: Vector2) -> void:
+	knockback = force
+	animation_player.call_deferred("play", "hit")
+	set_deferred('hit', true)
 	var hit_animation_length: float = animation_player.current_animation_length
 	await get_tree().create_timer(hit_animation_length).timeout
-	hit_box_collision_shape_2d.disabled = false
 	hit = false

@@ -96,3 +96,8 @@ func set_attack_delay(attack_delay: float):
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name.contains("attack"):
 		movement_enabled = true
+
+
+func _on_hurtbox_area_entered(area: Area2D) -> void:
+	if area.is_in_group('damage') and area.get_node('CollisionShape2D') != null and not area.get_node('CollisionShape2D').disabled:
+		print(self, ' has been hit!')

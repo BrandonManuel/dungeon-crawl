@@ -13,10 +13,14 @@ func physics_process(delta: float) -> void:
 		
 		
 func enter() -> void:
-	enemy.animated_sprite_2d.visible = false
-	enemy.death_sprite.visible = true
-	enemy.dead = true
-	enemy.die(enemy.animation_player)
+	die()
 	
 func exit() -> void:
 	return
+
+func die() -> void:
+	enemy.dead = true
+	enemy.animation_player.play('die')
+	var death_animation_length: float = enemy.animation_player.current_animation_length * 2
+	await get_tree().create_timer(death_animation_length).timeout
+	enemy.queue_free()

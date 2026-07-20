@@ -2,10 +2,14 @@ extends CharacterBody2D
 
 class_name Enemy
 
+@export var KNOCKBACK_DECAY: float = 0.0
 @export var SPEED = 10.0
+@export var health: float = 20.0
 
-func die(animation_player: AnimationPlayer) -> void:
-	animation_player.play('die')
-	var death_animation_length: float = animation_player.current_animation_length * 2
-	await get_tree().create_timer(death_animation_length).timeout
-	queue_free()
+var sprite_2d: Sprite2D
+var animation_player: AnimationPlayer
+var navigation_agent_2d: Node2DTrackingNavigationAgent2D
+
+var hit: bool = false
+var dead: bool = false
+var attack_targets: Array[Player] = []

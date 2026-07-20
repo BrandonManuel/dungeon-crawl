@@ -8,6 +8,6 @@ func _physics_process(delta: float) -> void:
 		global_position = freeze_location
 
 
-func freeze(freeze_location: Vector2) -> void:
+func freeze(location: Vector2) -> void:
 	is_frozen = true
-	self.freeze_location = freeze_location
+	freeze_location = location
