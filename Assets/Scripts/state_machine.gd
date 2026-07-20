@@ -114,7 +114,7 @@ func _on_detection_radius_body_exited(body: Node2D) -> void:
 # start attacking when player enters attack range
 func _on_attack_range_body_entered(body: Node2D) -> void:
 	if not enemy.dead and body.is_in_group("player"):
-		if enemy not in enemy.attack_targets:
+		if body not in enemy.attack_targets:
 			enemy.attack_targets.push_back(body)
 		current_state.Transitioned.emit(current_state, "attack")
 
