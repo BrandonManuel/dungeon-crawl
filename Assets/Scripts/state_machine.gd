@@ -47,8 +47,11 @@ func physics_process(delta: float) -> void:
 		current_state.physics_process(delta)
 		return
 		
-#	follow player if there is a player target, player is in sightline, and I am not currently attacking nor following
-	if player_target and current_state.state_name.to_lower() != "follow" and not current_state.state_name.to_lower().contains( "attack"):
+#   if player target has died, go back to idle
+	if player_target and player_target.dead:
+		current_state.Transitioned.emit(current_state, "idle")
+#	follow player if there is a player target, player is in sightline, player is alive, and I am not currently attacking nor following
+	if player_target and not  player_target.dead and current_state.state_name.to_lower() != "follow" and not current_state.state_name.to_lower().contains( "attack"):
 		var sight_line: RayCast2D = enemy.get_node("DetectionRadius").get_node("RayCast2D")
 		sight_line.global_position = enemy.global_position
 		sight_line.target_position = player_target.global_position - enemy.global_position
@@ -105,6 +108,9 @@ func _on_detection_radius_body_entered(body: Node2D) -> void:
 	if body is not Player:
 		return
 	
+	if "dead" in body and body.dead:
+		return
+		
 	player_target = body
 
 func _on_detection_radius_body_exited(body: Node2D) -> void:
@@ -113,7 +119,11 @@ func _on_detection_radius_body_exited(body: Node2D) -> void:
 	
 # start attacking when player enters attack range
 func _on_attack_range_body_entered(body: Node2D) -> void:
-	if not enemy.dead and body.is_in_group("player"):
+	if not enemy.dead and body.is_in_group("player") and "dead" in body:
+		if body.dead:
+			print(body, ' is dead already so leaving')
+			return
+			
 		if body not in enemy.attack_targets:
 			enemy.attack_targets.push_back(body)
 		current_state.Transitioned.emit(current_state, "attack")

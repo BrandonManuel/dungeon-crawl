@@ -4,16 +4,21 @@ class_name Player
 
 @onready var hand: Marker2D = $Hand
 @onready var animation_player: AnimationPlayer = $Visual/AnimationPlayer
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 @export var attack_delay: float = 0.0
+@export var health: float = 50.0
+@export var JOYSTICK_OFFSET: float = .2
 
 var weapon: Weapon = null
 var last_held_direction: Vector2
 
 const SPEED: float = 100.0
-@export var JOYSTICK_OFFSET: float = .2
 
 var movement_enabled: bool = true
+var dead: bool = false
+
+var death_sound: AudioStream
 
 func _ready() -> void:
 	var held = hand.get_children()
@@ -25,9 +30,9 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if not animation_player.is_playing():
 		animation_player.play("idle")
-	
+		
 func _physics_process(delta: float) -> void:
-	if not movement_enabled:
+	if dead or not movement_enabled:
 		return
 		
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
@@ -48,17 +53,7 @@ func handle_attack(direction: Vector2) -> void:
 	var attack := Input.is_action_just_pressed("attack")
 	if weapon != null and attack and not (animation_player.is_playing() and animation_player.current_animation.contains("attack")):		
 		movement_enabled = false
-		#if direction.x == 0  + JOYSTICK_OFFSET:
-			#if direction.y >= 0  + JOYSTICK_OFFSET:
-				#animation_player.play("attack_down")
-				#weapon.get_node('AnimationPlayer').play("attack_down")
-			#else:
-				#animation_player.play("attack_up")
-				#weapon.get_node('AnimationPlayer').play("attack_up")
 		if direction.x > 0  + JOYSTICK_OFFSET:
-			#if direction.y  0  + JOYSTICK_OFFSET:
-				#animation_player.play("attack_right")
-				#weapon.get_node('AnimationPlayer').play("attack_right")
 			if direction.y > 0  + JOYSTICK_OFFSET:
 				animation_player.play("attack_down_right")
 				weapon.get_node('AnimationPlayer').play("attack_down_right")
@@ -100,4 +95,15 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group('damage') and area.get_node('CollisionShape2D') != null and not area.get_node('CollisionShape2D').disabled:
-		print(self, ' has been hit!')
+		if area.damage:
+			audio_stream_player_2d.play()
+			print('Attack did ', area.damage, ' damage')
+			health -= area.damage
+			if health <= 0:
+				dead = true
+				audio_stream_player_2d.stop()
+				death_sound = load("res://Assets/Sounds/player_dead.wav") as AudioStream
+				audio_stream_player_2d.stream = death_sound
+				#audio_stream_player_2d.volume_db = audio_stream_player_2d.volume_db
+				audio_stream_player_2d.play()
+				animation_player.play('die')
