@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://b7nbiewccwujs" path="res://Assets/Scripts/goblin.gd" id="1_tjamc"]
 [ext_resource type="Texture2D" uid="uid://c3nps74hib3ho" path="res://Assets/Sprites/Goblin.png" id="2_nb4yb"]
-[ext_resource type="AudioStream" uid="uid://cqltvwel0mxt3" path="res://Assets/Sounds/enemy_dead.wav" id="4_6lcod"]
 [ext_resource type="Script" uid="uid://bsawv0r2xmt6q" path="res://Assets/Scripts/node_2d_tracking_navigation_agent_2d.gd" id="4_nb4yb"]
 [ext_resource type="Script" uid="uid://dicehix582buy" path="res://Assets/Scripts/blood.gd" id="4_suboo"]
 [ext_resource type="AudioStream" uid="uid://dpurnoexegr8t" path="res://Assets/Sounds/enemy_hit.wav" id="4_uslvc"]
@@ -508,7 +507,7 @@ radius = 16.0
 collision_layer = 4
 collision_mask = 5
 script = ExtResource("1_tjamc")
-KNOCKBACK_DECAY = 1000.0
+knockback = 150.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1363112958]
 shape = SubResource("CapsuleShape2D_of3jj")
@@ -604,7 +603,7 @@ collision_mask = 2
 shape = SubResource("CircleShape2D_n3wst")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=783256201]
-stream = ExtResource("4_6lcod")
+stream = ExtResource("4_uslvc")
 bus = &"Enemy Sound Effects"
 
 [connection signal="died" from="." to="StateMachine" method="_on_enemy_dead"]

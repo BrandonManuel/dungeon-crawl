@@ -3,6 +3,7 @@ extends Node2D
 class_name Weapon
 
 var player: CharacterBody2D
+var enabled: bool = true
 
 func attack(attacker: CharacterBody2D) -> void:
 	self.player = attacker

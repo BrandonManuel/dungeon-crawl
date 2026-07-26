@@ -9,8 +9,8 @@ func process(delta: float) -> void:
 	return
 	
 func physics_process(delta: float) -> void:
-	enemy.knockback = enemy.knockback.move_toward(Vector2.ZERO, enemy.KNOCKBACK_DECAY * delta)
-	enemy.velocity = enemy.knockback
+	enemy.received_knockback = enemy.received_knockback.move_toward(Vector2.ZERO, enemy.KNOCKBACK_DECAY * delta)
+	enemy.velocity = enemy.received_knockback
 	if enemy.animation_player.current_animation == 'attack' and enemy.animation_player.is_playing():
 		return
 	

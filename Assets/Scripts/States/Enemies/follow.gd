@@ -34,9 +34,9 @@ func physics_process(delta: float) -> void:
 		var direction: Vector2 = enemy.global_position.direction_to(next_path_pos)
 		var walk_velocity: Vector2 = direction * enemy.SPEED
 		
-		enemy.knockback = enemy.knockback.move_toward(Vector2.ZERO, enemy.KNOCKBACK_DECAY * delta)
+		enemy.received_knockback = enemy.received_knockback.move_toward(Vector2.ZERO, enemy.KNOCKBACK_DECAY * delta)
 		
-		enemy.velocity = walk_velocity + enemy.knockback
+		enemy.velocity = walk_velocity + enemy.received_knockback
 
 		if !enemy.hit:
 			if direction.y < 0:

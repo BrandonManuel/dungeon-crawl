@@ -4,6 +4,7 @@ extends Weapon
 @onready var slash: Sprite2D = $Effect/Slash
 @onready var effect: Node2D = $Effect
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 @export var knockback: float
 @export var damage: float
@@ -25,6 +26,11 @@ func _ready() -> void:
 	pitch_shift_effect = AudioServer.get_bus_effect(AudioServer.get_bus_index(audio_stream_player_2d.bus), 0)
 
 func _physics_process(delta: float) -> void:
+	if !enabled:
+		audio_stream_player_2d.stop()
+		animation_player.stop()
+		animation_player.play('RESET')
+		
 	if slash.visible:
 		if !slash_location_set:
 			slash_location_set = true

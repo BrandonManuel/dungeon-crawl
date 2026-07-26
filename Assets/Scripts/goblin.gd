@@ -12,8 +12,6 @@ extends Enemy
 @onready var detection_radius: Area2D = $DetectionRadius
 @onready var hitbox: HitBoxArea2D = $Attack/Hitbox
 
-var knockback: Vector2
-
 var players: Array[CharacterBody2D]
 
 signal was_hit
@@ -30,6 +28,7 @@ func _ready() -> void:
 	audio_stream_player_2d = goblin_audio_stream_player_2d
 	
 	hitbox.damage = damage
+	hitbox.knockback = knockback
 	return
 
 func _process(delta: float) -> void:
@@ -62,7 +61,7 @@ func disable_hitbox() -> void:
 	attack_range_collision_shape_2d.disabled = true
 
 func _on_was_hit(force: Vector2) -> void:
-	knockback = force
+	received_knockback = force
 	animation_player.call_deferred("play", "hit")
 	set_deferred('hit', true)
 	var hit_animation_length: float = animation_player.current_animation_length

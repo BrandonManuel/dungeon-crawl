@@ -9,6 +9,7 @@ class_name Player
 @export var attack_delay: float = 0.0
 @export var health: float = 50.0
 @export var JOYSTICK_OFFSET: float = .2
+@export var KNOCKBACK_DECAY: float = 1000.0
 
 var weapon: Weapon = null
 var last_held_direction: Vector2
@@ -16,14 +17,18 @@ var last_held_direction: Vector2
 const SPEED: float = 100.0
 
 var movement_enabled: bool = true
+var can_attack: bool = true
 var dead: bool = false
 
 var death_sound: AudioStream
+
+var received_knockback: Vector2
 
 func _ready() -> void:
 	var held = hand.get_children()
 	if held.size() == 1:
 		weapon = held.get(0)
+		weapon.player = self
 		
 	set_attack_delay(attack_delay)
 		
@@ -32,11 +37,22 @@ func _process(delta: float) -> void:
 		animation_player.play("idle")
 		
 func _physics_process(delta: float) -> void:
-	if dead or not movement_enabled:
+	if not can_attack and (animation_player.is_playing() and animation_player.current_animation.contains("attack")):
+		can_attack = true
+		weapon.enabled = true
+		
+	if dead :
 		return
 		
 	var direction := Input.get_vector("move_left", "move_right", "move_up", "move_down")
-	handle_movement(delta, direction)
+	if movement_enabled:
+		handle_movement(delta, direction)
+	else:
+		if received_knockback != Vector2.ZERO:
+			received_knockback = received_knockback.move_toward(Vector2.ZERO, KNOCKBACK_DECAY * delta)
+			velocity = received_knockback
+			move_and_slide()
+			
 	handle_attack(last_held_direction)
 	
 func handle_movement(delta: float, direction: Vector2) -> void:
@@ -46,12 +62,22 @@ func handle_movement(delta: float, direction: Vector2) -> void:
 	else:
 		velocity = velocity.move_toward(Vector2.ZERO, SPEED)
 		
-	
+	if received_knockback != Vector2.ZERO:
+		received_knockback = received_knockback.move_toward(Vector2.ZERO, KNOCKBACK_DECAY * delta)
+	elif not can_attack:
+#		ensure player can attack again after getting hit, and make sure sprite is visible again in case weirdness with timing here
+		animation_player.play("RESET")
+		movement_enabled = true
+		can_attack = true
+		weapon.enabled = true
+		
+	velocity += received_knockback
 	move_and_slide()
 
 func handle_attack(direction: Vector2) -> void:
 	var attack := Input.is_action_just_pressed("attack")
-	if weapon != null and attack and not (animation_player.is_playing() and animation_player.current_animation.contains("attack")):		
+	if weapon != null and attack and can_attack:	
+		can_attack = false	
 		movement_enabled = false
 		if direction.x > 0  + JOYSTICK_OFFSET:
 			if direction.y > 0  + JOYSTICK_OFFSET:
@@ -91,14 +117,29 @@ func set_attack_delay(attack_delay: float):
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name.contains("attack"):
 		movement_enabled = true
+		can_attack = true
+		weapon.enabled = true
+		
+	if anim_name.contains("hit"):
+		movement_enabled = true
+		can_attack = true
+		weapon.enabled = true
 
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group('damage') and area.get_node('CollisionShape2D') != null and not area.get_node('CollisionShape2D').disabled:
-		if area.damage:
+		if 'damage' in area and 'knockback' in area:
 			audio_stream_player_2d.play()
 			print('Attack did ', area.damage, ' damage')
+			print('Attack has ', area.knockback, ' knockback')
 			health -= area.damage
+			received_knockback = area.get_node('CollisionShape2D').global_position.direction_to(global_position) * area.knockback
+			if received_knockback != Vector2.ZERO:
+				can_attack = false
+				weapon.enabled = false
+				animation_player.stop()
+				animation_player.play('RESET')				
+				animation_player.play('hit')
 			if health <= 0:
 				dead = true
 				audio_stream_player_2d.stop()
