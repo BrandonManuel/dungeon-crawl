@@ -497,6 +497,8 @@ vframes = 2
 script = ExtResource("2_35yry")
 knockback = 300.0
 damage = 10.0
+pitch_shift_low = 0.8
+pitch_shift_high = 1.5
 
 [node name="Effect" type="Node2D" parent="." unique_id=1869117928]
 
