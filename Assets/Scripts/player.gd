@@ -10,6 +10,8 @@ class_name Player
 @export var health: float = 50.0
 @export var JOYSTICK_OFFSET: float = .2
 @export var KNOCKBACK_DECAY: float = 1000.0
+@export var BLOCK_DAMAGE_NEGATION: float = .5
+@export var BLOCK_KNOCKBACK_NEGATION: float = .5
 
 var weapon: Weapon = null
 var last_held_direction: Vector2
@@ -17,7 +19,8 @@ var last_held_direction: Vector2
 const SPEED: float = 100.0
 
 var movement_enabled: bool = true
-var can_attack: bool = true
+var can_act: bool = true
+var is_blocking: bool = false
 var dead: bool = false
 
 var death_sound: AudioStream
@@ -37,8 +40,8 @@ func _process(delta: float) -> void:
 		animation_player.play("idle")
 		
 func _physics_process(delta: float) -> void:
-	if not can_attack and (animation_player.is_playing() and animation_player.current_animation.contains("attack")):
-		can_attack = true
+	if not can_act and (animation_player.is_playing() and animation_player.current_animation.contains("attack")):
+		can_act = true
 		weapon.enabled = true
 		
 	if dead :
@@ -54,6 +57,7 @@ func _physics_process(delta: float) -> void:
 			move_and_slide()
 			
 	handle_attack(last_held_direction)
+	handle_block()
 	
 func handle_movement(delta: float, direction: Vector2) -> void:
 	if direction != Vector2.ZERO:
@@ -64,11 +68,11 @@ func handle_movement(delta: float, direction: Vector2) -> void:
 		
 	if received_knockback != Vector2.ZERO:
 		received_knockback = received_knockback.move_toward(Vector2.ZERO, KNOCKBACK_DECAY * delta)
-	elif not can_attack:
+	elif not can_act:
 #		ensure player can attack again after getting hit, and make sure sprite is visible again in case weirdness with timing here
 		animation_player.play("RESET")
 		movement_enabled = true
-		can_attack = true
+		can_act = true
 		weapon.enabled = true
 		
 	velocity += received_knockback
@@ -76,8 +80,8 @@ func handle_movement(delta: float, direction: Vector2) -> void:
 
 func handle_attack(direction: Vector2) -> void:
 	var attack := Input.is_action_just_pressed("attack")
-	if weapon != null and attack and can_attack:	
-		can_attack = false	
+	if weapon != null and attack and can_act:	
+		can_act = false	
 		movement_enabled = false
 		if direction.x > 0  + JOYSTICK_OFFSET:
 			if direction.y > 0  + JOYSTICK_OFFSET:
@@ -109,6 +113,19 @@ func handle_attack(direction: Vector2) -> void:
 				
 		weapon.attack(self)
 
+func handle_block() -> void:
+	var block := Input.is_action_just_pressed("block")
+	if block and can_act:
+		movement_enabled = false
+		is_blocking = true
+		animation_player.play('blocking (no shield)')
+		
+	var release_block := Input.is_action_just_released("block")
+	if release_block:
+		movement_enabled = true
+		is_blocking = false
+		animation_player.play("RESET")
+
 func set_attack_delay(attack_delay: float):
 	for animation in animation_player.get_animation_list():
 		if animation.contains('attack'):
@@ -117,25 +134,40 @@ func set_attack_delay(attack_delay: float):
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name.contains("attack"):
 		movement_enabled = true
-		can_attack = true
+		can_act = true
 		weapon.enabled = true
 		
 	if anim_name.contains("hit"):
 		movement_enabled = true
-		can_attack = true
+		can_act = true
 		weapon.enabled = true
+		
+	if anim_name.contains("blocking (no shield)"):
+		if Input.is_action_pressed("block"):
+			movement_enabled = false
+			animation_player.play("block (no shield)")
+		else:
+			movement_enabled = true
+			animation_player.play("RESET")
 
 
 func _on_hurtbox_area_entered(area: Area2D) -> void:
 	if area.is_in_group('damage') and area.get_node('CollisionShape2D') != null and not area.get_node('CollisionShape2D').disabled:
 		if 'damage' in area and 'knockback' in area:
-			audio_stream_player_2d.play()
-			print('Attack did ', area.damage, ' damage')
-			print('Attack has ', area.knockback, ' knockback')
-			health -= area.damage
-			received_knockback = area.get_node('CollisionShape2D').global_position.direction_to(global_position) * area.knockback
-			if received_knockback != Vector2.ZERO:
-				can_attack = false
+			var damage = area.damage
+			var hit_knockback = area.knockback
+			if is_blocking:
+				damage = damage * BLOCK_DAMAGE_NEGATION
+				hit_knockback = hit_knockback * BLOCK_KNOCKBACK_NEGATION
+				print('blocked')
+			else:
+				audio_stream_player_2d.play()
+			print('Attack did ', damage, ' damage')
+			print('Attack has ', hit_knockback, ' knockback')
+			health -= damage
+			received_knockback = area.get_node('CollisionShape2D').global_position.direction_to(global_position) * hit_knockback
+			if not is_blocking and received_knockback != Vector2.ZERO:
+				can_act = false
 				weapon.enabled = false
 				animation_player.stop()
 				animation_player.play('RESET')				
