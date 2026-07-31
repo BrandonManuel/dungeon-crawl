@@ -46,6 +46,10 @@ func physics_process(delta: float) -> void:
 	if current_state.state_name.to_lower() == 'dead':
 		current_state.physics_process(delta)
 		return
+	
+	if enemy.parried or enemy.hit:
+		current_state.physics_process(delta)
+		return
 		
 #   if player target has died, go back to idle
 	if player_target and player_target.dead:

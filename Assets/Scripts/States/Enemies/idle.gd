@@ -26,7 +26,11 @@ func process(delta: float) -> void:
 	
 func physics_process(delta: float) -> void:
 	if enemy:
-		enemy.velocity = move_direction * enemy.SPEED
+		enemy.received_knockback = enemy.received_knockback.move_toward(Vector2.ZERO, enemy.KNOCKBACK_DECAY * delta)
+		enemy.velocity = (move_direction * enemy.SPEED) + enemy.received_knockback
+		
+		if enemy.hit or enemy.parried:
+			return
 		
 		if move_direction.y < 0:
 			enemy.animation_player.play("move_up")

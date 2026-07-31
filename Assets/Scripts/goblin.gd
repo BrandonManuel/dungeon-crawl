@@ -15,7 +15,10 @@ extends Enemy
 var players: Array[CharacterBody2D]
 
 signal was_hit
+signal was_parried
 signal died
+
+var parried_sound
 
 func _ready() -> void:
 	var player_nodes = get_tree().get_nodes_in_group('player')
@@ -29,8 +32,7 @@ func _ready() -> void:
 	
 	hitbox.damage = damage
 	hitbox.knockback = knockback
-	return
-
+	
 func _process(delta: float) -> void:
 	if dead:
 		return
@@ -54,6 +56,9 @@ func is_hit(force: Vector2, damage: float) -> void:
 	else:
 		was_hit.emit(force)
 
+func is_parried(force: Vector2) -> void:
+	was_parried.emit(force)
+
 func disable_collision() -> void:
 	collision_shape_2d.disabled = true
 	
@@ -63,7 +68,19 @@ func disable_hitbox() -> void:
 func _on_was_hit(force: Vector2) -> void:
 	received_knockback = force
 	animation_player.call_deferred("play", "hit")
-	set_deferred('hit', true)
+	hit = true
 	var hit_animation_length: float = animation_player.current_animation_length
 	await get_tree().create_timer(hit_animation_length).timeout
 	hit = false
+
+func _on_was_parried(force: Vector2) -> void:
+	received_knockback = force
+	animation_player.call_deferred("play", "parried")
+	parried = true
+	var parried_animation_length: float = animation_player.current_animation_length
+	audio_stream_player_2d.stop()
+	parried_sound = load("res://Assets/Sounds/enemy_parried.wav") as AudioStream
+	audio_stream_player_2d.stream = parried_sound
+	audio_stream_player_2d.play()
+	await get_tree().create_timer(parried_animation_length).timeout
+	parried = false

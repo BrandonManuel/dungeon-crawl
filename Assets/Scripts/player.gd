@@ -12,6 +12,8 @@ class_name Player
 @export var KNOCKBACK_DECAY: float = 1000.0
 @export var BLOCK_DAMAGE_NEGATION: float = .5
 @export var BLOCK_KNOCKBACK_NEGATION: float = .5
+@export var PARRY_TIMING_SECONDS: float = .1
+@export var PARRY_KNOCKBACK: float = 100.0
 
 var weapon: Weapon = null
 var last_held_direction: Vector2
@@ -21,6 +23,8 @@ const SPEED: float = 100.0
 var movement_enabled: bool = true
 var can_act: bool = true
 var is_blocking: bool = false
+var is_parrying: bool = false
+
 var dead: bool = false
 
 var death_sound: AudioStream
@@ -118,6 +122,7 @@ func handle_block() -> void:
 	if block and can_act:
 		movement_enabled = false
 		is_blocking = true
+		set_parry()
 		animation_player.play('blocking (no shield)')
 		
 	var release_block := Input.is_action_just_released("block")
@@ -126,6 +131,11 @@ func handle_block() -> void:
 		is_blocking = false
 		animation_player.play("RESET")
 
+func set_parry() -> void:
+	is_parrying = true
+	await get_tree().create_timer(PARRY_TIMING_SECONDS).timeout
+	is_parrying = false
+	
 func set_attack_delay(attack_delay: float):
 	for animation in animation_player.get_animation_list():
 		if animation.contains('attack'):
@@ -156,7 +166,13 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 		if 'damage' in area and 'knockback' in area:
 			var damage = area.damage
 			var hit_knockback = area.knockback
-			if is_blocking:
+			if is_parrying:
+				damage = 0.0
+				hit_knockback = 0.0
+				var enemy = area.enemy
+				enemy.is_parried(position.direction_to(enemy.position) * PARRY_KNOCKBACK)
+				print('parried')
+			elif is_blocking:
 				damage = damage * BLOCK_DAMAGE_NEGATION
 				hit_knockback = hit_knockback * BLOCK_KNOCKBACK_NEGATION
 				print('blocked')
@@ -166,7 +182,7 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 			print('Attack has ', hit_knockback, ' knockback')
 			health -= damage
 			received_knockback = area.get_node('CollisionShape2D').global_position.direction_to(global_position) * hit_knockback
-			if not is_blocking and received_knockback != Vector2.ZERO:
+			if not (is_blocking or is_parrying) and received_knockback != Vector2.ZERO:
 				can_act = false
 				weapon.enabled = false
 				animation_player.stop()
@@ -177,6 +193,5 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 				audio_stream_player_2d.stop()
 				death_sound = load("res://Assets/Sounds/player_dead.wav") as AudioStream
 				audio_stream_player_2d.stream = death_sound
-				#audio_stream_player_2d.volume_db = audio_stream_player_2d.volume_db
 				audio_stream_player_2d.play()
 				animation_player.play('die')

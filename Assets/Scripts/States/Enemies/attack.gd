@@ -14,6 +14,9 @@ func physics_process(delta: float) -> void:
 	if enemy.animation_player.current_animation == 'attack' and enemy.animation_player.is_playing():
 		return
 	
+	if enemy.hit or enemy.parried:
+		return
+		
 	if enemy.navigation_agent_2d.node_target != null:
 		attack()
 		

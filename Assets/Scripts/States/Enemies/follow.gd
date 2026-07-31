@@ -38,17 +38,19 @@ func physics_process(delta: float) -> void:
 		
 		enemy.velocity = walk_velocity + enemy.received_knockback
 
-		if !enemy.hit:
-			if direction.y < 0:
-				enemy.animation_player.play("move_up")
-			else:
-				enemy.animation_player.play("move_down")
-			if direction.x < 0:
-				enemy.sprite_2d.flip_h = true
-				enemy.attack_sprite_2d.flip_h = true
-			else:
-				enemy.sprite_2d.flip_h = false
-				enemy.attack_sprite_2d.flip_h = false
+		if enemy.hit or enemy.parried:
+			return
+			
+		if direction.y < 0:
+			enemy.animation_player.play("move_up")
+		else:
+			enemy.animation_player.play("move_down")
+		if direction.x < 0:
+			enemy.sprite_2d.flip_h = true
+			enemy.attack_sprite_2d.flip_h = true
+		else:
+			enemy.sprite_2d.flip_h = false
+			enemy.attack_sprite_2d.flip_h = false
 	else:
 		Transitioned.emit(self, "idle")
 		
