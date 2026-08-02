@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bvhogkii5cn2o" path="res://Assets/Sprites/Warrior.png" id="2_t1xgp"]
 [ext_resource type="Script" uid="uid://x4xrr8j8ddny" path="res://Assets/Scripts/camera_2d.gd" id="3_23lac"]
 [ext_resource type="Script" uid="uid://dicehix582buy" path="res://Assets/Scripts/blood.gd" id="3_w3t24"]
+[ext_resource type="Texture2D" uid="uid://cg2jd6ieabb2k" path="res://Assets/Sprites/Parry.png" id="4_c3tg1"]
 [ext_resource type="PackedScene" uid="uid://cnetj2md2mlmx" path="res://Assets/Scenes/sword.tscn" id="4_t1xgp"]
 [ext_resource type="AudioStream" uid="uid://cge2khw8glnik" path="res://Assets/Sounds/player_hit.wav" id="6_w3t24"]
 
@@ -640,6 +641,34 @@ tracks/0/keys = {
 "values": [0]
 }
 
+[sub_resource type="Animation" id="Animation_aq5fl"]
+resource_name = "parry"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.15, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [18, 19, 20, 21]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Hand:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.15),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [Vector2(-10, 6), Vector2(-10, 7), Vector2(-10, 6)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_c3tg1"]
 _data = {
 &"RESET": SubResource("Animation_t1xgp"),
@@ -655,7 +684,8 @@ _data = {
 &"blocking (no shield)": SubResource("Animation_tcr7l"),
 &"die": SubResource("Animation_xv74q"),
 &"hit": SubResource("Animation_8qq7w"),
-&"idle": SubResource("Animation_23lac")
+&"idle": SubResource("Animation_23lac"),
+&"parry": SubResource("Animation_aq5fl")
 }
 
 [sub_resource type="Curve" id="Curve_8qq7w"]
@@ -676,6 +706,7 @@ motion_mode = 1
 script = ExtResource("1_38rej")
 
 [node name="Visual" type="Node2D" parent="." unique_id=1683080154]
+position = Vector2(2, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Visual" unique_id=2114046268]
 root_node = NodePath("../..")
@@ -685,7 +716,7 @@ libraries/ = SubResource("AnimationLibrary_c3tg1")
 position = Vector2(-2, 0)
 texture = ExtResource("2_t1xgp")
 hframes = 6
-vframes = 3
+vframes = 4
 region_rect = Rect2(0, 0, 138, 60)
 
 [node name="DeathSprite" type="Sprite2D" parent="Visual" unique_id=2091051550]
@@ -711,6 +742,10 @@ scale_amount_curve = SubResource("Curve_8qq7w")
 color = Color(1, 0, 0, 1)
 script = ExtResource("3_w3t24")
 
+[node name="Parry" type="Sprite2D" parent="Visual" unique_id=2002594857]
+visible = false
+texture = ExtResource("4_c3tg1")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1860281384]
 shape = SubResource("CapsuleShape2D_wrm1d")
 
@@ -734,6 +769,9 @@ shape = SubResource("CircleShape2D_cea73")
 
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1878020558]
 stream = ExtResource("6_w3t24")
+
+[node name="ParryTimer" type="Timer" parent="." unique_id=1142008899]
+one_shot = true
 
 [connection signal="animation_finished" from="Visual/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
