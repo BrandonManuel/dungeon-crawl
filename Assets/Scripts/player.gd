@@ -139,6 +139,7 @@ func handle_parry() -> void:
 	if parry and can_act and parry_timer.time_left <= 0.0:
 		movement_enabled = false
 		is_parrying = true
+		can_act = false
 		animation_player.play('parry')
 
 func set_attack_delay(attack_delay: float):
