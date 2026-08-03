@@ -24,6 +24,7 @@ const SPEED: float = 100.0
 
 var movement_enabled: bool = true
 var can_act: bool = true
+var is_attacking: bool = false
 var is_blocking: bool = false
 var is_parrying: bool = false
 var parry_wait: float = 0.0
@@ -90,6 +91,8 @@ func handle_attack(direction: Vector2) -> void:
 	var attack := Input.is_action_just_pressed("attack")
 	if weapon != null and attack and can_act:	
 		can_act = false	
+		is_blocking = false
+		is_parrying = false
 		movement_enabled = false
 		if direction.x > 0  + JOYSTICK_OFFSET:
 			if direction.y > 0  + JOYSTICK_OFFSET:
@@ -119,11 +122,12 @@ func handle_attack(direction: Vector2) -> void:
 				animation_player.play("attack_up")
 				weapon.get_node('AnimationPlayer').play("attack_up")
 				
+		is_attacking = true
 		weapon.attack(self)
 
 func handle_block() -> void:
 	var block := Input.is_action_just_pressed("block")
-	if block and can_act:
+	if block and not is_attacking and not is_blocking and can_act:
 		movement_enabled = false
 		is_blocking = true
 		animation_player.play('blocking (no shield)')
@@ -136,9 +140,10 @@ func handle_block() -> void:
 	
 func handle_parry() -> void:
 	var parry := Input.is_action_just_pressed("parry")
-	if parry and can_act and parry_timer.time_left <= 0.0:
+	if parry and not is_attacking and can_act and parry_timer.time_left <= 0.0:
 		movement_enabled = false
 		is_parrying = true
+		is_blocking = false
 		can_act = false
 		animation_player.play('parry')
 
@@ -152,6 +157,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		movement_enabled = true
 		can_act = true
 		weapon.enabled = true
+		is_attacking = false
 		
 	if anim_name.contains("hit"):
 		movement_enabled = true
