@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ParticlePreset" format=3 uid="uid://dob5pxbruitax"]
+
+[ext_resource type="Script" uid="uid://djqfa4r11wf27" path="res://Assets/Scripts/particle_preset.gd" id="1_0nyrs"]
+
+[resource]
+script = ExtResource("1_0nyrs")
+amount = 30
+lifetime = 0.36
+direction = Vector2(1, 0)
+spread = 180.0
+initial_velocity_min = 12.69
+initial_velocity_max = 102.84
+gravity = Vector2(0, -980)
+scale_amount_max = 4.0
+color = Color(1, 0, 0, 1)
+explosiveness = 0.0
+one_shot = false
+metadata/_custom_type_script = "uid://djqfa4r11wf27"

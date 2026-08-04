@@ -11,6 +11,11 @@ extends Enemy
 @onready var state_machine: StateMachine = $StateMachine
 @onready var detection_radius: Area2D = $DetectionRadius
 @onready var hitbox: HitBoxArea2D = $Attack/Hitbox
+@onready var death_cpu_particles_2d: CPUParticles2D = $DeathCPUParticles2D
+@onready var hit_cpu_particles_2d: CPUParticles2D = $HitCPUParticles2D
+
+@export var hit_preset: ParticlePreset
+@export var death_preset: ParticlePreset
 
 var players: Array[CharacterBody2D]
 
@@ -20,6 +25,11 @@ signal died
 
 var parried_sound
 
+func _apply_preset(preset: ParticlePreset, particles: CPUParticles2D) -> void:
+	for prop in preset.get_property_list():
+		if prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
+			particles.set(prop.name, preset.get(prop.name))
+			
 func _ready() -> void:
 	var player_nodes = get_tree().get_nodes_in_group('player')
 	for player_node in player_nodes:
@@ -32,6 +42,9 @@ func _ready() -> void:
 	
 	hitbox.damage = damage
 	hitbox.knockback = knockback
+	
+	_apply_preset(hit_preset, hit_cpu_particles_2d)
+	_apply_preset(death_preset, death_cpu_particles_2d)
 	
 func _process(delta: float) -> void:
 	if dead:
@@ -51,6 +64,18 @@ func _physics_process(delta: float) -> void:
 	
 func is_hit(force: Vector2, damage: float) -> void:
 	health -= damage
+	var current_hit_cpu_particles: CPUParticles2D = hit_cpu_particles_2d
+#	if current hit particles are emitting, temporarily make a new one
+#	keep this in mind as a future optimization if it's a performance concern at any point
+	if current_hit_cpu_particles.emitting:
+		current_hit_cpu_particles = current_hit_cpu_particles.duplicate()
+		current_hit_cpu_particles.one_shot = true
+		hit_cpu_particles_2d.add_sibling(current_hit_cpu_particles)
+		current_hit_cpu_particles.restart()
+		current_hit_cpu_particles.emitting = true
+		current_hit_cpu_particles.finished.connect(current_hit_cpu_particles.queue_free)
+	hit_cpu_particles_2d.gravity = force
+	hit_cpu_particles_2d.direction = force.normalized()
 	if health <= 0:
 		died.emit()
 	else:

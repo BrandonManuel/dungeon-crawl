@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b5bjd2q3711jh" path="res://Assets/Scripts/player.gd" id="1_38rej"]
 [ext_resource type="Texture2D" uid="uid://bvhogkii5cn2o" path="res://Assets/Sprites/Warrior.png" id="2_t1xgp"]
 [ext_resource type="Script" uid="uid://x4xrr8j8ddny" path="res://Assets/Scripts/camera_2d.gd" id="3_23lac"]
-[ext_resource type="Script" uid="uid://dicehix582buy" path="res://Assets/Scripts/blood.gd" id="3_w3t24"]
+[ext_resource type="Script" uid="uid://dicehix582buy" path="res://Assets/Scripts/Tools/blood.gd" id="3_w3t24"]
 [ext_resource type="Texture2D" uid="uid://cg2jd6ieabb2k" path="res://Assets/Sprites/Parry.png" id="4_c3tg1"]
 [ext_resource type="PackedScene" uid="uid://cnetj2md2mlmx" path="res://Assets/Scenes/sword.tscn" id="4_t1xgp"]
 [ext_resource type="AudioStream" uid="uid://cge2khw8glnik" path="res://Assets/Sounds/player_hit.wav" id="6_w3t24"]
