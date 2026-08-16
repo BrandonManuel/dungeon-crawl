@@ -31,6 +31,8 @@ func _apply_preset(preset: ParticlePreset, particles: CPUParticles2D) -> void:
 			particles.set(prop.name, preset.get(prop.name))
 			
 func _ready() -> void:
+	damage = 20.0
+	
 	var player_nodes = get_tree().get_nodes_in_group('player')
 	for player_node in player_nodes:
 		players.push_back(player_node as CharacterBody2D)

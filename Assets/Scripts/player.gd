@@ -9,7 +9,8 @@ class_name Player
 @onready var parry_sprite: Sprite2D = $Visual/Parry
 
 @export var attack_delay: float = 0.0
-@export var health: float = 50.0
+@export var max_health: float = 100.0
+@export var health: float = 100.0
 @export var JOYSTICK_OFFSET: float = .2
 @export var KNOCKBACK_DECAY: float = 1000.0
 @export var BLOCK_DAMAGE_NEGATION: float = .5

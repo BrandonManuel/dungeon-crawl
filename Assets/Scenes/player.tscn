@@ -7,6 +7,8 @@
 [ext_resource type="Texture2D" uid="uid://cg2jd6ieabb2k" path="res://Assets/Sprites/Parry.png" id="4_c3tg1"]
 [ext_resource type="PackedScene" uid="uid://cnetj2md2mlmx" path="res://Assets/Scenes/sword.tscn" id="4_t1xgp"]
 [ext_resource type="AudioStream" uid="uid://cge2khw8glnik" path="res://Assets/Sounds/player_hit.wav" id="6_w3t24"]
+[ext_resource type="Script" uid="uid://cmic4ln02uttk" path="res://Assets/Scripts/health_bar.gd" id="8_jp3cw"]
+[ext_resource type="Script" uid="uid://fowy36duvqt" path="res://Assets/Scripts/health_bar_label.gd" id="8_lerqx"]
 
 [sub_resource type="Animation" id="Animation_t1xgp"]
 length = 0.001
@@ -784,6 +786,39 @@ stream = ExtResource("6_w3t24")
 
 [node name="ParryTimer" type="Timer" parent="." unique_id=1142008899]
 one_shot = true
+
+[node name="UI" type="Control" parent="." unique_id=1261418279]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HealthBar" type="ProgressBar" parent="UI" unique_id=311149962]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 19.0
+offset_right = 18.0
+offset_bottom = 47.0
+rotation = 1.5707964
+step = 1.0
+value = 100.0
+rounded = true
+fill_mode = 3
+show_percentage = false
+script = ExtResource("8_jp3cw")
+
+[node name="HealthBarLabel" type="Label" parent="UI" unique_id=900015372]
+layout_mode = 0
+offset_left = -49.0
+offset_top = 18.0
+offset_right = 50.0
+offset_bottom = 41.0
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("8_lerqx")
 
 [connection signal="animation_finished" from="Visual/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
