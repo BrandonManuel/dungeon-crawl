@@ -1,13 +1,7 @@
 extends ProgressBar
 
-@onready var player: Player = $"../.."
+@onready var health_ui: Control = $".."
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	max_value = player.max_health
-	value = player.health
+	max_value = health_ui.actor.max_health
+	value = health_ui.actor.current_health

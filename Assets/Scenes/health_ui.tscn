@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://4nbnifdrgsdl"]
+
+[ext_resource type="Script" uid="uid://cmic4ln02uttk" path="res://Assets/Scripts/health_bar.gd" id="1_ek1jp"]
+[ext_resource type="Script" uid="uid://k80qbsru7ha5" path="res://Assets/Scripts/health_ui.gd" id="1_luhcp"]
+[ext_resource type="Script" uid="uid://fowy36duvqt" path="res://Assets/Scripts/health_bar_label.gd" id="2_luhcp"]
+
+[node name="HealthUI" type="Control" unique_id=579008734]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_luhcp")
+
+[node name="HealthBar" type="ProgressBar" parent="." unique_id=415905114]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 19.0
+offset_right = 18.0
+offset_bottom = 47.0
+rotation = 1.5707964
+step = 1.0
+value = 100.0
+rounded = true
+fill_mode = 3
+show_percentage = false
+script = ExtResource("1_ek1jp")
+
+[node name="HealthBarLabel" type="Label" parent="." unique_id=329069532]
+layout_mode = 0
+offset_left = -49.0
+offset_top = 18.0
+offset_right = 50.0
+offset_bottom = 41.0
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+script = ExtResource("2_luhcp")

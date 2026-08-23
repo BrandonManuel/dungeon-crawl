@@ -1,12 +1,6 @@
 extends Label
 
-@onready var player: Player = $"../.."
+@onready var health_ui: Control = $".."
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	text = '%.0f' % player.health
+	text = '%.0f' % health_ui.actor.current_health

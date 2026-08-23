@@ -1,12 +1,6 @@
-extends CharacterBody2D
+extends Actor
 
 class_name Enemy
-
-@export var KNOCKBACK_DECAY: float = 1000.0
-@export var SPEED = 10.0
-@export var health: float = 20.0
-@export var damage: float = 10.0
-@export var knockback: float = 1.0
 
 var received_knockback: Vector2
 var sprite_2d: Sprite2D

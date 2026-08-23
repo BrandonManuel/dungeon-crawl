@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends Actor
 
 class_name Player
 
@@ -8,11 +8,13 @@ class_name Player
 @onready var parry_timer: Timer = $ParryTimer
 @onready var parry_sprite: Sprite2D = $Visual/Parry
 
+@export var PLAYER_KNOCKBACK_DECAY: float = 1000.0
+@export var PLAYER_SPEED: float = 100.0
+@export var PLAYER_HEALTH: float = 100.0
+
+
 @export var attack_delay: float = 0.0
-@export var max_health: float = 100.0
-@export var health: float = 100.0
 @export var JOYSTICK_OFFSET: float = .2
-@export var KNOCKBACK_DECAY: float = 1000.0
 @export var BLOCK_DAMAGE_NEGATION: float = .5
 @export var BLOCK_KNOCKBACK_NEGATION: float = .5
 @export var PARRY_KNOCKBACK: float = 100.0
@@ -21,7 +23,6 @@ class_name Player
 var weapon: Weapon = null
 var last_held_direction: Vector2
 
-const SPEED: float = 100.0
 
 var movement_enabled: bool = true
 var can_act: bool = true
@@ -37,6 +38,11 @@ var audio_stream: AudioStream
 var received_knockback: Vector2
 
 func _ready() -> void:
+	KNOCKBACK_DECAY = PLAYER_KNOCKBACK_DECAY
+	SPEED = PLAYER_SPEED
+	max_health = PLAYER_HEALTH
+	current_health = PLAYER_HEALTH
+
 	var held = hand.get_children()
 	if held.size() == 1:
 		weapon = held.get(0)
@@ -213,7 +219,7 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 				audio_stream_player_2d.play()
 			print('Attack did ', damage, ' damage')
 			print('Attack has ', hit_knockback, ' knockback')
-			health -= damage
+			current_health -= damage
 			received_knockback = area.get_node('CollisionShape2D').global_position.direction_to(global_position) * hit_knockback
 			if not (is_blocking or is_parrying) and received_knockback != Vector2.ZERO:
 				can_act = false
@@ -221,7 +227,7 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 				animation_player.stop()
 				animation_player.play('RESET')				
 				animation_player.play('hit')
-			if health <= 0:
+			if current_health <= 0:
 				dead = true
 				audio_stream_player_2d.stop()
 				audio_stream = load("res://Assets/Sounds/player_dead.wav") as AudioStream

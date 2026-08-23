@@ -17,6 +17,13 @@ extends Enemy
 @export var hit_preset: ParticlePreset
 @export var death_preset: ParticlePreset
 
+
+@export var	GOBLIN_KNOCKBACK_DECAY = 1000.0
+@export var	GOBLIN_SPEED = 10.0
+@export var	GOBLIN_HEALTH = 20.0
+@export var	GOBLIN_DAMAGE = 10.0
+@export var	GOBLIN_KNOCKBACK = 1.0
+
 var players: Array[CharacterBody2D]
 
 signal was_hit
@@ -24,14 +31,19 @@ signal was_parried
 signal died
 
 var parried_sound
-
+	
 func _apply_preset(preset: ParticlePreset, particles: CPUParticles2D) -> void:
 	for prop in preset.get_property_list():
 		if prop.usage & PROPERTY_USAGE_SCRIPT_VARIABLE:
 			particles.set(prop.name, preset.get(prop.name))
-			
+		
 func _ready() -> void:
-	damage = 20.0
+	KNOCKBACK_DECAY = GOBLIN_KNOCKBACK_DECAY
+	SPEED = GOBLIN_SPEED
+	max_health = GOBLIN_HEALTH
+	current_health = GOBLIN_HEALTH
+	damage = GOBLIN_DAMAGE
+	knockback = GOBLIN_KNOCKBACK
 	
 	var player_nodes = get_tree().get_nodes_in_group('player')
 	for player_node in player_nodes:
@@ -44,7 +56,7 @@ func _ready() -> void:
 	
 	hitbox.damage = damage
 	hitbox.knockback = knockback
-	
+		
 	_apply_preset(hit_preset, hit_cpu_particles_2d)
 	_apply_preset(death_preset, death_cpu_particles_2d)
 	
@@ -65,7 +77,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 func is_hit(force: Vector2, damage: float) -> void:
-	health -= damage
+	current_health -= damage
 	var current_hit_cpu_particles: CPUParticles2D = hit_cpu_particles_2d
 #	if current hit particles are emitting, temporarily make a new one
 #	keep this in mind as a future optimization if it's a performance concern at any point
@@ -78,7 +90,7 @@ func is_hit(force: Vector2, damage: float) -> void:
 		current_hit_cpu_particles.finished.connect(current_hit_cpu_particles.queue_free)
 	hit_cpu_particles_2d.gravity = force
 	hit_cpu_particles_2d.direction = force.normalized()
-	if health <= 0:
+	if current_health <= 0:
 		died.emit()
 	else:
 		was_hit.emit(force)

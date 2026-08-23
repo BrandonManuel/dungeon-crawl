@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://dng2rn54aff" path="res://Assets/Sprites/Goblin_Slash.png" id="10_qbr7n"]
 [ext_resource type="Script" uid="uid://ukvthpqgx3xa" path="res://Assets/Scripts/States/Enemies/attack.gd" id="10_yhjar"]
 [ext_resource type="Script" uid="uid://px4323qbv1jc" path="res://Assets/Scripts/hitbox.gd" id="11_qbr7n"]
+[ext_resource type="PackedScene" uid="uid://4nbnifdrgsdl" path="res://Assets/Scenes/health_ui.tscn" id="14_ij21g"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_of3jj"]
 radius = 9.0
@@ -315,7 +316,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath(".:SPEED")
+tracks/3/path = NodePath(".:GOBLIN_SPEED")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -646,7 +647,6 @@ collision_mask = 5
 script = ExtResource("1_tjamc")
 hit_preset = ExtResource("7_ij21g")
 death_preset = ExtResource("2_6lcod")
-knockback = 150.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1363112958]
 shape = SubResource("CapsuleShape2D_of3jj")
@@ -762,6 +762,9 @@ shape = SubResource("CircleShape2D_n3wst")
 [node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=783256201]
 stream = ExtResource("4_uslvc")
 bus = &"Enemy Sound Effects"
+
+[node name="HealthUI" parent="." unique_id=579008734 node_paths=PackedStringArray("actor") instance=ExtResource("14_ij21g")]
+actor = NodePath("..")
 
 [connection signal="died" from="." to="StateMachine" method="_on_enemy_dead"]
 [connection signal="was_hit" from="." to="." method="_on_was_hit"]
