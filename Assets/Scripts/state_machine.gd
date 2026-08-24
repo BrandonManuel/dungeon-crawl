@@ -9,9 +9,11 @@ var player_target: Player
 
 var current_state: State
 
+
 var states: Dictionary = {}
 
 var initial_speed: float
+var can_attack: bool = true
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -50,10 +52,12 @@ func physics_process(delta: float) -> void:
 	if enemy.parried or enemy.hit:
 		current_state.physics_process(delta)
 		return
-		
-#   if player target has died, go back to idle
-	if player_target and player_target.dead:
-		current_state.Transitioned.emit(current_state, "idle")
+	
+	if player_target:
+		enemy.player_direction = enemy.global_position.direction_to(player_target.global_position)
+		# if player target has died, go back to idle
+		if player_target.dead:
+			current_state.Transitioned.emit(current_state, "idle")
 #	follow player if there is a player target, player is in sightline, player is alive, and I am not currently attacking nor following
 	if player_target and not  player_target.dead and current_state.state_name.to_lower() != "follow" and not current_state.state_name.to_lower().contains( "attack"):
 		var sight_line: RayCast2D = enemy.get_node("DetectionRadius").get_node("RayCast2D")
@@ -81,7 +85,7 @@ func on_state_transition(state: State, new_state_name: String) -> void :
 	if state != current_state:
 		return
 		
-	var new_state = states.get(new_state_name.to_lower())
+	var new_state = states.get(new_state_name.to_lower()) as State
 	if !new_state:
 		return
 			
@@ -138,3 +142,17 @@ func _on_leave_attack_range_body_exited(body: Node2D) -> void:
 		enemy.attack_targets.remove_at(enemy.attack_targets.find(body))
 		if enemy.attack_targets.size() == 0:
 			current_state.Transitioned.emit(current_state, "follow")
+
+func on_attack_finished() -> void:
+	enemy.timer.timeout.disconnect(on_attack_finished)
+	if enemy.attack_cooldown_seconds > 0:
+		enemy.timer.one_shot = true
+		can_attack = false
+		enemy.timer.timeout.connect(_on_cooldown_finished)
+		enemy.timer.start(enemy.attack_cooldown_seconds)
+	else:
+		can_attack = true
+
+func _on_cooldown_finished() -> void:
+	enemy.timer.timeout.disconnect(_on_cooldown_finished)
+	can_attack = true

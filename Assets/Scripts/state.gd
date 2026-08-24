@@ -10,7 +10,7 @@ func process(delta: float) -> void:
 	print('printing from state process')
 	
 func physics_process(delta: float) -> void:
-		print('printing from state physics_process')
+	print('printing from state physics_process')
 
 
 func enter() -> void:
@@ -19,5 +19,3 @@ func enter() -> void:
 	
 func exit() -> void:
 	print('printing from state exit')
-
-	

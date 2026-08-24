@@ -11,6 +11,7 @@ class_name Player
 @export var PLAYER_KNOCKBACK_DECAY: float = 1000.0
 @export var PLAYER_SPEED: float = 100.0
 @export var PLAYER_HEALTH: float = 100.0
+@export var PLAYER_ATTACK_COOLDOWN_SECONDS: float = 0.0
 
 
 @export var attack_delay: float = 0.0

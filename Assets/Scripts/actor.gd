@@ -8,3 +8,4 @@ var max_health: float
 var current_health: float
 var damage: float
 var knockback: float
+var attack_cooldown_seconds: float

@@ -8,7 +8,7 @@ extends Enemy
 @onready var attack_range_collision_shape_2d: CollisionShape2D = $AttackRange/CollisionShape2D
 @onready var goblin_sprite_2d: Sprite2D = $Sprite2D
 @onready var attack_sprite_2d: Sprite2D = $Attack
-@onready var state_machine: StateMachine = $StateMachine
+@onready var goblin_state_machine: StateMachine = $StateMachine
 @onready var detection_radius: Area2D = $DetectionRadius
 @onready var hitbox: HitBoxArea2D = $Attack/Hitbox
 @onready var death_cpu_particles_2d: CPUParticles2D = $DeathCPUParticles2D
@@ -17,12 +17,13 @@ extends Enemy
 @export var hit_preset: ParticlePreset
 @export var death_preset: ParticlePreset
 
-
 @export var	GOBLIN_KNOCKBACK_DECAY = 1000.0
 @export var	GOBLIN_SPEED = 10.0
 @export var	GOBLIN_HEALTH = 20.0
 @export var	GOBLIN_DAMAGE = 10.0
 @export var	GOBLIN_KNOCKBACK = 1.0
+@export var GOBLIN_ATTACK_COOLDOWN_SECONDS = 0.0
+@export var GOBLIN_TIMER: Timer
 
 var players: Array[CharacterBody2D]
 
@@ -44,6 +45,9 @@ func _ready() -> void:
 	current_health = GOBLIN_HEALTH
 	damage = GOBLIN_DAMAGE
 	knockback = GOBLIN_KNOCKBACK
+	attack_cooldown_seconds = GOBLIN_ATTACK_COOLDOWN_SECONDS
+	timer = GOBLIN_TIMER
+	state_machine = goblin_state_machine
 	
 	var player_nodes = get_tree().get_nodes_in_group('player')
 	for player_node in player_nodes:
@@ -77,6 +81,9 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 func is_hit(force: Vector2, damage: float) -> void:
+	if dead:
+		return
+		
 	current_health -= damage
 	var current_hit_cpu_particles: CPUParticles2D = hit_cpu_particles_2d
 #	if current hit particles are emitting, temporarily make a new one
