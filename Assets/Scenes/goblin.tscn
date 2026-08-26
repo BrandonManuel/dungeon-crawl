@@ -648,6 +648,7 @@ script = ExtResource("1_tjamc")
 hit_preset = ExtResource("7_ij21g")
 death_preset = ExtResource("2_6lcod")
 GOBLIN_KNOCKBACK = 150.0
+GOBLIN_ATTACK_COOLDOWN_SECONDS = 1.0
 GOBLIN_TIMER = NodePath("Timer")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1363112958]

@@ -16,6 +16,7 @@ class_name Player
 
 @export var attack_delay: float = 0.0
 @export var JOYSTICK_OFFSET: float = .2
+@export var MOUSE_OFFSET: float = 20.0
 @export var BLOCK_DAMAGE_NEGATION: float = .5
 @export var BLOCK_KNOCKBACK_NEGATION: float = .5
 @export var PARRY_KNOCKBACK: float = 100.0
@@ -23,6 +24,7 @@ class_name Player
 
 var weapon: Weapon = null
 var last_held_direction: Vector2
+var mouse_click: bool = false
 
 
 var movement_enabled: bool = true
@@ -71,8 +73,13 @@ func _physics_process(delta: float) -> void:
 			received_knockback = received_knockback.move_toward(Vector2.ZERO, KNOCKBACK_DECAY * delta)
 			velocity = received_knockback
 			move_and_slide()
-			
-	handle_attack(last_held_direction)
+		
+	if mouse_click:
+		handle_attack(get_local_mouse_position())
+		mouse_click = false	
+	else:
+		handle_attack(last_held_direction)
+		
 	handle_block()
 	handle_parry()
 	
@@ -95,6 +102,11 @@ func handle_movement(delta: float, direction: Vector2) -> void:
 	velocity += received_knockback
 	move_and_slide()
 
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("attack"):
+		if event is InputEventMouseButton:
+			mouse_click = true
+
 func handle_attack(direction: Vector2) -> void:
 	var attack := Input.is_action_just_pressed("attack")
 	if weapon != null and attack and can_act:	
@@ -102,21 +114,25 @@ func handle_attack(direction: Vector2) -> void:
 		is_blocking = false
 		is_parrying = false
 		movement_enabled = false
-		if direction.x > 0  + JOYSTICK_OFFSET:
-			if direction.y > 0  + JOYSTICK_OFFSET:
+		var offset: float = JOYSTICK_OFFSET
+		if mouse_click:
+			offset = MOUSE_OFFSET
+			
+		if direction.x > 0  + offset:
+			if direction.y > 0  + offset:
 				animation_player.play("attack_down_right")
 				weapon.get_node('AnimationPlayer').play("attack_down_right")
-			elif direction.y < 0 - JOYSTICK_OFFSET:
+			elif direction.y < 0 - offset:
 				animation_player.play("attack_up_right")
 				weapon.get_node('AnimationPlayer').play("attack_up_right")
 			else:
 				animation_player.play("attack_right")
 				weapon.get_node('AnimationPlayer').play("attack_right")
-		elif direction.x < 0 - JOYSTICK_OFFSET:
-			if direction.y > 0  + JOYSTICK_OFFSET:
+		elif direction.x < 0 - offset:
+			if direction.y > 0  + offset:
 				animation_player.play("attack_down_left")
 				weapon.get_node('AnimationPlayer').play("attack_down_left")
-			elif direction.y < 0 - JOYSTICK_OFFSET:
+			elif direction.y < 0 - offset:
 				animation_player.play("attack_up_left")
 				weapon.get_node('AnimationPlayer').play("attack_up_left")
 			else:
@@ -134,6 +150,9 @@ func handle_attack(direction: Vector2) -> void:
 		weapon.attack(self)
 
 func handle_block() -> void:
+	if is_parrying:
+		return
+		
 	var block := Input.is_action_just_pressed("block")
 	var holding_block := Input.is_action_pressed("block")
 	if block or holding_block and not is_attacking and not is_blocking and can_act:
