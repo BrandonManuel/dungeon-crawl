@@ -152,16 +152,19 @@ func handle_attack(direction: Vector2) -> void:
 func handle_block() -> void:
 	if is_parrying:
 		return
-		
+
 	var block := Input.is_action_just_pressed("block")
 	var holding_block := Input.is_action_pressed("block")
+
 	if block or holding_block and not is_attacking and not is_blocking and can_act:
+		animation_player.play("RESET")
 		movement_enabled = false
 		is_blocking = true
 		animation_player.play('blocking (no shield)')
 		
 	var release_block := Input.is_action_just_released("block")
 	if release_block:
+		animation_player.play("RESET")
 		movement_enabled = true
 		is_blocking = false
 		animation_player.play("RESET")
