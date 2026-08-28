@@ -24,6 +24,7 @@ extends Enemy
 @export var	GOBLIN_KNOCKBACK = 1.0
 @export var GOBLIN_ATTACK_COOLDOWN_SECONDS = 0.0
 @export var GOBLIN_TIMER: Timer
+@export var GOBLIN_IDLE_PAUSE_CHANCE: int
 
 var players: Array[CharacterBody2D]
 
@@ -48,6 +49,7 @@ func _ready() -> void:
 	attack_cooldown_seconds = GOBLIN_ATTACK_COOLDOWN_SECONDS
 	timer = GOBLIN_TIMER
 	state_machine = goblin_state_machine
+	idle_pause_chance = GOBLIN_IDLE_PAUSE_CHANCE
 	
 	var player_nodes = get_tree().get_nodes_in_group('player')
 	for player_node in player_nodes:

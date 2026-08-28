@@ -1,0 +1,102 @@
+[gd_scene format=3 uid="uid://y1xkqiqu7ovg"]
+
+[ext_resource type="Script" uid="uid://gbsmy5fgl5te" path="res://Assets/Scripts/goblin_king.gd" id="1_sdq65"]
+[ext_resource type="Texture2D" uid="uid://bn7u4okpvnxlx" path="res://Assets/Sprites/Goblin King.png" id="1_y4gaq"]
+[ext_resource type="PackedScene" uid="uid://4nbnifdrgsdl" path="res://Assets/Scenes/health_ui.tscn" id="2_30w37"]
+[ext_resource type="PackedScene" uid="uid://bpdr5wji2alsh" path="res://Assets/Scenes/node_2d_tracking_navigation_agent_2d.tscn" id="3_4hwqd"]
+[ext_resource type="Script" uid="uid://cty01k8qiam15" path="res://Assets/Scripts/state_machine.gd" id="4_3vyty"]
+[ext_resource type="Script" uid="uid://d0eatrres1a46" path="res://Assets/Scripts/States/Enemies/idle.gd" id="5_3vyty"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_32f2c"]
+radius = 17.0
+height = 78.0
+
+[sub_resource type="Animation" id="Animation_4hwqd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_pis5i"]
+resource_name = "move_down"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_3th77"]
+resource_name = "move_up"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_47qr6"]
+_data = {
+&"RESET": SubResource("Animation_4hwqd"),
+&"move_down": SubResource("Animation_pis5i"),
+&"move_up": SubResource("Animation_3th77")
+}
+
+[node name="Goblin King" type="CharacterBody2D" unique_id=1370374569 node_paths=PackedStringArray("GOBLIN_KING_TIMER") groups=["enemies"]]
+collision_layer = 4
+collision_mask = 5
+script = ExtResource("1_sdq65")
+GOBLIN_KING_KNOCKBACK_DECAY = 500.0
+GOBLIN_KING_SPEED = 15.0
+GOBLIN_KING_TIMER = NodePath("Timer")
+GOBLIN_KING_IDLE_PAUSE_DENOMINATOR_CHANCE = 10
+GOBLIN_KING_IDLE_PAUSE_CHANCE = 50
+
+[node name="Visual" type="Node2D" parent="." unique_id=1784599326]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visual" unique_id=116860129]
+texture = ExtResource("1_y4gaq")
+
+[node name="Attack" type="Sprite2D" parent="Visual" unique_id=1991847540]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1912813307]
+shape = SubResource("CapsuleShape2D_32f2c")
+
+[node name="NavigationAgent2D" parent="." unique_id=557472068 instance=ExtResource("3_4hwqd")]
+
+[node name="HealthUI" parent="." unique_id=579008734 node_paths=PackedStringArray("actor") instance=ExtResource("2_30w37")]
+offset_top = 20.0
+offset_bottom = 20.0
+actor = NodePath("..")
+
+[node name="StateMachine" type="Node" parent="." unique_id=599979956 node_paths=PackedStringArray("enemy")]
+script = ExtResource("4_3vyty")
+states_scenes = Array[GDScript]([ExtResource("5_3vyty")])
+enemy = NodePath("..")
+metadata/_custom_type_script = "uid://cty01k8qiam15"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=41795653]
+libraries/ = SubResource("AnimationLibrary_47qr6")
+
+[node name="Timer" type="Timer" parent="." unique_id=12494925]

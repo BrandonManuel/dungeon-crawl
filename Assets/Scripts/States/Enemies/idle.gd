@@ -14,9 +14,19 @@ func _init() -> void:
 	state_name = "idle"
 
 func randomize_wander():
-	move_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
-	wander_time = randf_range(1, 3)
+	if enemy.velocity == Vector2.ZERO:
+		move_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
+		wander_time = randf_range(1, 5)
+		return
 		
+	if enemy.idle_pause_chance > 0:
+		var pause := randi_range(0, 100)
+		if pause < enemy.idle_pause_chance:
+			move_direction = Vector2.ZERO
+			wander_time = randf_range(1, 2)
+	else:	
+		move_direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
+		wander_time = randf_range(1, 3)
 	
 func process(delta: float) -> void:
 	if wander_time > 0:

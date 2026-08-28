@@ -3,6 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://4fmdrktcruhy" path="res://Assets/Sprites/Wall.png" id="1_hni1o"]
 [ext_resource type="AudioStream" uid="uid://bxpcwvo1hb8jq" path="res://Assets/Music/crawling.wav" id="1_lcp10"]
 [ext_resource type="PackedScene" uid="uid://d363t8itgryga" path="res://Assets/Scenes/goblin.tscn" id="1_pb48a"]
+[ext_resource type="PackedScene" uid="uid://y1xkqiqu7ovg" path="res://Assets/Scenes/goblin_king.tscn" id="3_hni1o"]
 [ext_resource type="PackedScene" uid="uid://dailuynkumusi" path="res://Assets/Scenes/player.tscn" id="4_iusbg"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_iusbg"]
@@ -42,6 +43,9 @@ position = Vector2(-213, 130)
 
 [node name="Goblin4" parent="Enemies" unique_id=853434177 instance=ExtResource("1_pb48a")]
 position = Vector2(134, 42)
+
+[node name="Goblin King" parent="Enemies" unique_id=1370374569 instance=ExtResource("3_hni1o")]
+position = Vector2(0, 191)
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1337511773]
 stream = ExtResource("1_lcp10")

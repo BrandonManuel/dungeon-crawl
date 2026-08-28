@@ -14,6 +14,10 @@ var attack_targets: Array[Player] = []
 var timer: Timer
 var state_machine: StateMachine
 var player_direction: Vector2
+var idle_pause_chance: int
 
 func is_parried(force: Vector2) -> void:
 	print('default is_parried')
+
+func is_hit(force: Vector2, damage: float) -> void:
+	print('default is_hit')

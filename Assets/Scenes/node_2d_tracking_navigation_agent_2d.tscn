@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bpdr5wji2alsh"]
+
+[ext_resource type="Script" uid="uid://bsawv0r2xmt6q" path="res://Assets/Scripts/node_2d_tracking_navigation_agent_2d.gd" id="1_nnody"]
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" unique_id=557472068]
+path_desired_distance = 5.0
+target_desired_distance = 5.0
+avoidance_enabled = true
+script = ExtResource("1_nnody")
