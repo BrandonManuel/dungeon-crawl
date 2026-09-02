@@ -7,6 +7,7 @@ class_name Player
 @onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
 @onready var parry_timer: Timer = $ParryTimer
 @onready var parry_sprite: Sprite2D = $Visual/Parry
+@onready var i_frames_timer: Timer = $IFramesTimer
 
 @export var PLAYER_KNOCKBACK_DECAY: float = 1000.0
 @export var PLAYER_SPEED: float = 100.0
@@ -29,6 +30,7 @@ var mouse_click: bool = false
 
 var movement_enabled: bool = true
 var can_act: bool = true
+var can_be_hit: bool = true
 var is_attacking: bool = false
 var is_blocking: bool = false
 var is_parrying: bool = false
@@ -150,7 +152,7 @@ func handle_attack(direction: Vector2) -> void:
 		weapon.attack(self)
 
 func handle_block() -> void:
-	if is_parrying:
+	if is_parrying or not can_be_hit:
 		return
 
 	var block := Input.is_action_just_pressed("block")
@@ -167,7 +169,6 @@ func handle_block() -> void:
 		animation_player.play("RESET")
 		movement_enabled = true
 		is_blocking = false
-		animation_player.play("RESET")
 	
 func handle_parry() -> void:
 	var parry := Input.is_action_just_pressed("parry")
@@ -199,6 +200,7 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 		
 	if anim_name.contains("blocking (no shield)"):
 		if Input.is_action_pressed("block"):
+			animation_player.play("RESET")
 			movement_enabled = false
 			animation_player.play("block (no shield)")
 		else:
@@ -244,12 +246,14 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 			print('Attack has ', hit_knockback, ' knockback')
 			current_health -= damage
 			received_knockback = area.get_node('CollisionShape2D').global_position.direction_to(global_position) * hit_knockback
-			if not (is_blocking or is_parrying) and received_knockback != Vector2.ZERO:
+			if can_be_hit and not (is_blocking or is_parrying) and received_knockback != Vector2.ZERO:
 				can_act = false
+				can_be_hit = false
 				weapon.enabled = false
 				animation_player.stop()
 				animation_player.play('RESET')				
 				animation_player.play('hit')
+				i_frames_timer.start(animation_player.get_animation('hit').length)
 			if current_health <= 0:
 				dead = true
 				audio_stream_player_2d.stop()
@@ -257,3 +261,7 @@ func _on_hurtbox_area_entered(area: Area2D) -> void:
 				audio_stream_player_2d.stream = audio_stream
 				audio_stream_player_2d.play()
 				animation_player.play('die')
+
+
+func _on_i_frames_timer_timeout() -> void:
+	can_be_hit = true
