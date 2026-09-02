@@ -86,6 +86,9 @@ func is_hit(force: Vector2, damage: float) -> void:
 	if dead:
 		return
 		
+	if parried:
+		damage = damage * 1.5
+		
 	current_health -= damage
 	var current_hit_cpu_particles: CPUParticles2D = hit_cpu_particles_2d
 #	if current hit particles are emitting, temporarily make a new one
@@ -100,6 +103,7 @@ func is_hit(force: Vector2, damage: float) -> void:
 	hit_cpu_particles_2d.gravity = force
 	hit_cpu_particles_2d.direction = force.normalized()
 	if current_health <= 0:
+		current_health = 0
 		died.emit()
 	else:
 		was_hit.emit(force)
