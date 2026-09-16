@@ -17,6 +17,10 @@ extends Enemy
 @export var hit_preset: ParticlePreset
 @export var death_preset: ParticlePreset
 
+var parried_sound = load("res://Assets/Sounds/enemy_parried.wav") as AudioStream
+var hit_sound = load("res://Assets/Sounds/enemy_hit.wav") as AudioStream
+var critical_hit_sound = load("res://Assets/Sounds/enemy_hit_critical.wav") as AudioStream
+
 @export var	GOBLIN_KNOCKBACK_DECAY = 1000.0
 @export var	GOBLIN_SPEED = 10.0
 @export var	GOBLIN_HEALTH = 20.0
@@ -32,7 +36,7 @@ signal was_hit
 signal was_parried
 signal died
 
-var parried_sound
+var starting_volume: float
 	
 func _apply_preset(preset: ParticlePreset, particles: CPUParticles2D) -> void:
 	for prop in preset.get_property_list():
@@ -65,6 +69,7 @@ func _ready() -> void:
 		
 	_apply_preset(hit_preset, hit_cpu_particles_2d)
 	_apply_preset(death_preset, death_cpu_particles_2d)
+	starting_volume = audio_stream_player_2d.volume_db
 	
 func _process(delta: float) -> void:
 	if dead:
@@ -106,7 +111,7 @@ func is_hit(force: Vector2, damage: float) -> void:
 		current_health = 0
 		died.emit()
 	else:
-		was_hit.emit(force)
+		was_hit.emit(force, parried)
 
 func is_parried(force: Vector2) -> void:
 	was_parried.emit(force)
@@ -117,8 +122,18 @@ func disable_collision() -> void:
 func disable_hitbox() -> void:
 	attack_range_collision_shape_2d.disabled = true
 
-func _on_was_hit(force: Vector2) -> void:
+func _on_was_hit(force: Vector2, critical: bool) -> void:
+	audio_stream_player_2d.stop()
 	received_knockback = force
+	if critical:
+		audio_stream_player_2d.volume_db = 6.0 
+		audio_stream_player_2d.stream = critical_hit_sound
+		audio_stream_player_2d.play()
+	else:
+		audio_stream_player_2d.stream = hit_sound
+		
+	audio_stream_player_2d.play()
+		
 	animation_player.call_deferred("play", "hit")
 	hit = true
 	var hit_animation_length: float = animation_player.current_animation_length
@@ -131,8 +146,11 @@ func _on_was_parried(force: Vector2) -> void:
 	parried = true
 	var parried_animation_length: float = animation_player.current_animation_length
 	audio_stream_player_2d.stop()
-	parried_sound = load("res://Assets/Sounds/enemy_parried.wav") as AudioStream
 	audio_stream_player_2d.stream = parried_sound
 	audio_stream_player_2d.play()
 	await get_tree().create_timer(parried_animation_length).timeout
 	parried = false
+
+
+func _on_audio_stream_player_2d_finished() -> void:
+	audio_stream_player_2d.volume_db = starting_volume
