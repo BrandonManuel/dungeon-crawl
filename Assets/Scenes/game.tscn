@@ -34,15 +34,27 @@ tile_set = SubResource("TileSet_of3jj")
 
 [node name="Goblin" parent="Enemies" unique_id=863396306 instance=ExtResource("1_pb48a")]
 position = Vector2(170, -159)
+GOBLIN_KNOCKBACK_DECAY = 1000.0
+GOBLIN_SPEED = 10.0
+GOBLIN_DAMAGE = 10.0
 
 [node name="Goblin2" parent="Enemies" unique_id=489501098 instance=ExtResource("1_pb48a")]
 position = Vector2(-187, -90)
+GOBLIN_KNOCKBACK_DECAY = 1000.0
+GOBLIN_SPEED = 10.0
+GOBLIN_DAMAGE = 10.0
 
 [node name="Goblin3" parent="Enemies" unique_id=1877367559 instance=ExtResource("1_pb48a")]
 position = Vector2(-213, 130)
+GOBLIN_KNOCKBACK_DECAY = 1000.0
+GOBLIN_SPEED = 10.0
+GOBLIN_DAMAGE = 10.0
 
 [node name="Goblin4" parent="Enemies" unique_id=853434177 instance=ExtResource("1_pb48a")]
 position = Vector2(134, 42)
+GOBLIN_KNOCKBACK_DECAY = 1000.0
+GOBLIN_SPEED = 10.0
+GOBLIN_DAMAGE = 10.0
 
 [node name="Goblin King" parent="Enemies" unique_id=1370374569 instance=ExtResource("3_hni1o")]
 position = Vector2(0, 191)

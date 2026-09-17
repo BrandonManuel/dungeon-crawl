@@ -31,6 +31,7 @@ var critical_hit_sound = load("res://Assets/Sounds/enemy_hit_critical.wav") as A
 @export var GOBLIN_IDLE_PAUSE_CHANCE: int
 
 var players: Array[CharacterBody2D]
+var cameras: Array[Camera2D]
 
 signal was_hit
 signal was_parried
@@ -58,6 +59,9 @@ func _ready() -> void:
 	var player_nodes = get_tree().get_nodes_in_group('player')
 	for player_node in player_nodes:
 		players.push_back(player_node as CharacterBody2D)
+		
+	for player in players:
+		cameras.push_back(player.get_node('Camera2D') as Camera2D)
 		
 	animation_player = goblin_animation_player
 	navigation_agent_2d = goblin_navigation_agent_2d
@@ -112,6 +116,11 @@ func is_hit(force: Vector2, damage: float) -> void:
 		died.emit()
 	else:
 		was_hit.emit(force, parried)
+	
+	if current_health <= 0 and parried:
+		#	chance to focus camera
+		if randi_range(0, 1):
+			critical_zoom()
 
 func is_parried(force: Vector2) -> void:
 	was_parried.emit(force)
@@ -119,30 +128,57 @@ func is_parried(force: Vector2) -> void:
 func disable_collision() -> void:
 	collision_shape_2d.disabled = true
 	
+func enable_hitbox() -> void:
+	attack_range_collision_shape_2d.disabled = false
+	
 func disable_hitbox() -> void:
 	attack_range_collision_shape_2d.disabled = true
 
-func _on_was_hit(force: Vector2, critical: bool) -> void:
-	audio_stream_player_2d.stop()
-	received_knockback = force
-	if critical:
+func critical_zoom() -> void:
+	if cameras.size() == 1:
 		audio_stream_player_2d.volume_db = 6.0 
 		audio_stream_player_2d.stream = critical_hit_sound
 		audio_stream_player_2d.play()
-	else:
-		audio_stream_player_2d.stream = hit_sound
+		Engine.time_scale = 0.5
+		audio_stream_player_2d.pitch_scale = .5
+		var camera: Camera2D = cameras.get(0)
+		var prev_parent := camera.get_parent()
+		var prev_zoom := camera.zoom
+
+		var tween_in = camera.create_tween().set_parallel(true)
+		camera.set_position_smoothing_enabled(false)
+		tween_in.tween_property(camera, "global_position", global_position, .1)
+		tween_in.tween_property(camera, "zoom", Vector2(2.5, 2.5), .25)
+		await tween_in.finished
 		
+		await get_tree().create_timer(.5).timeout
+		
+		#var tween_out = camera.create_tween().set_parallel(true)
+		#tween_out.tween_property(camera, "global_position", prev_parent.global_position, .1)
+		#tween_out.tween_property(camera, "zoom", prev_zoom, .25)
+		camera.global_position = prev_parent.global_position
+		camera.zoom = prev_zoom
+		Engine.time_scale = 1.0
+		audio_stream_player_2d.pitch_scale = 1.0
+		#await tween_out.finished
+		camera.set_position_smoothing_enabled(true)
+		
+func _on_was_hit(force: Vector2, critical: bool) -> void:
+	audio_stream_player_2d.stop()
+	received_knockback = force
+	audio_stream_player_2d.stream = hit_sound
 	audio_stream_player_2d.play()
-		
-	animation_player.call_deferred("play", "hit")
+	animation_player.play("hit")
+	call_deferred("disable_hitbox")
 	hit = true
 	var hit_animation_length: float = animation_player.current_animation_length
 	await get_tree().create_timer(hit_animation_length).timeout
 	hit = false
+	call_deferred("enable_hitbox")
 
 func _on_was_parried(force: Vector2) -> void:
 	received_knockback = force
-	animation_player.call_deferred("play", "parried")
+	animation_player.play("parried")
 	parried = true
 	var parried_animation_length: float = animation_player.current_animation_length
 	audio_stream_player_2d.stop()
