@@ -136,13 +136,17 @@ func disable_hitbox() -> void:
 
 func critical_zoom() -> void:
 	if cameras.size() == 1:
+		var camera: Camera2D = cameras.get(0)
+		var prev_parent := camera.get_parent()
+		if (prev_parent as Player).critical_zoom:
+			return
+		
+		(prev_parent as Player).critical_zoom = true
 		audio_stream_player_2d.volume_db = 6.0 
 		audio_stream_player_2d.stream = critical_hit_sound
 		audio_stream_player_2d.play()
 		Engine.time_scale = 0.5
 		audio_stream_player_2d.pitch_scale = .5
-		var camera: Camera2D = cameras.get(0)
-		var prev_parent := camera.get_parent()
 		var prev_zoom := camera.zoom
 
 		var tween_in = camera.create_tween().set_parallel(true)
@@ -162,6 +166,7 @@ func critical_zoom() -> void:
 		audio_stream_player_2d.pitch_scale = 1.0
 		#await tween_out.finished
 		camera.set_position_smoothing_enabled(true)
+		(prev_parent as Player).critical_zoom = false
 		
 func _on_was_hit(force: Vector2, critical: bool) -> void:
 	audio_stream_player_2d.stop()

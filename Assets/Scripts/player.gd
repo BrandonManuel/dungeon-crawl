@@ -36,6 +36,8 @@ var is_blocking: bool = false
 var is_parrying: bool = false
 var parry_wait: float = 0.0
 
+var critical_zoom: bool = false
+
 var dead: bool = false
 
 var audio_stream: AudioStream
