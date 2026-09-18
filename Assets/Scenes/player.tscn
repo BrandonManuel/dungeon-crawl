@@ -785,6 +785,7 @@ position = Vector2(-10, 6)
 
 [node name="Sword" parent="Hand" unique_id=1478424939 instance=ExtResource("4_t1xgp")]
 position = Vector2(-0.56726074, 0.8235378)
+damage = 50.0
 
 [node name="Hurtbox" type="Area2D" parent="." unique_id=1444615523]
 collision_layer = 2

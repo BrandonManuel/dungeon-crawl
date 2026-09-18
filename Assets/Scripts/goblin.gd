@@ -32,6 +32,7 @@ var critical_hit_sound = load("res://Assets/Sounds/enemy_hit_critical.wav") as A
 
 var players: Array[CharacterBody2D]
 var cameras: Array[Camera2D]
+var player_camera_focus: Player = null
 
 signal was_hit
 signal was_parried
@@ -76,18 +77,16 @@ func _ready() -> void:
 	starting_volume = audio_stream_player_2d.volume_db
 	
 func _process(delta: float) -> void:
-	if dead:
-		return
-		
 	if state_machine:
 		state_machine.process(delta)
 		
-func _physics_process(delta: float) -> void:
-	if dead:
-		return
+	if player_camera_focus:
+		player_camera_focus.critical_zoom_target = global_position
 		
+func _physics_process(delta: float) -> void:
 	if state_machine:
 		state_machine.physics_process(delta)
+		
 		
 	move_and_slide()
 	
@@ -113,6 +112,7 @@ func is_hit(force: Vector2, damage: float) -> void:
 	hit_cpu_particles_2d.direction = force.normalized()
 	if current_health <= 0:
 		current_health = 0
+		received_knockback = force
 		died.emit()
 	else:
 		was_hit.emit(force, parried)
@@ -138,20 +138,21 @@ func critical_zoom() -> void:
 	if cameras.size() == 1:
 		var camera: Camera2D = cameras.get(0)
 		var prev_parent := camera.get_parent()
-		if (prev_parent as Player).critical_zoom:
+		if (prev_parent as Player).critical_zoom_target.is_finite():
 			return
 		
-		(prev_parent as Player).critical_zoom = true
+		player_camera_focus = prev_parent
+		(prev_parent as Player).critical_zoom_target = global_position
 		audio_stream_player_2d.volume_db = 6.0 
 		audio_stream_player_2d.stream = critical_hit_sound
 		audio_stream_player_2d.play()
 		Engine.time_scale = 0.5
 		audio_stream_player_2d.pitch_scale = .5
 		var prev_zoom := camera.zoom
-
-		var tween_in = camera.create_tween().set_parallel(true)
+		
 		camera.set_position_smoothing_enabled(false)
-		tween_in.tween_property(camera, "global_position", global_position, .1)
+		var tween_in = camera.create_tween().set_parallel(true)
+		#tween_in.tween_property(camera, "global_position", global_position, .1)
 		tween_in.tween_property(camera, "zoom", Vector2(2.5, 2.5), .25)
 		await tween_in.finished
 		
@@ -160,13 +161,14 @@ func critical_zoom() -> void:
 		#var tween_out = camera.create_tween().set_parallel(true)
 		#tween_out.tween_property(camera, "global_position", prev_parent.global_position, .1)
 		#tween_out.tween_property(camera, "zoom", prev_zoom, .25)
-		camera.global_position = prev_parent.global_position
+		#camera.global_position = prev_parent.global_position
 		camera.zoom = prev_zoom
 		Engine.time_scale = 1.0
 		audio_stream_player_2d.pitch_scale = 1.0
 		#await tween_out.finished
 		camera.set_position_smoothing_enabled(true)
-		(prev_parent as Player).critical_zoom = false
+		(prev_parent as Player).critical_zoom_target = Vector2.INF
+		player_camera_focus = null
 		
 func _on_was_hit(force: Vector2, critical: bool) -> void:
 	audio_stream_player_2d.stop()

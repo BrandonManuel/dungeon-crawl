@@ -8,6 +8,7 @@ class_name Player
 @onready var parry_timer: Timer = $ParryTimer
 @onready var parry_sprite: Sprite2D = $Visual/Parry
 @onready var i_frames_timer: Timer = $IFramesTimer
+@onready var camera_2d: Camera2D = $Camera2D
 
 @export var PLAYER_KNOCKBACK_DECAY: float = 1000.0
 @export var PLAYER_SPEED: float = 100.0
@@ -36,7 +37,7 @@ var is_blocking: bool = false
 var is_parrying: bool = false
 var parry_wait: float = 0.0
 
-var critical_zoom: bool = false
+var critical_zoom_target: Vector2 = Vector2.INF
 
 var dead: bool = false
 
@@ -61,6 +62,12 @@ func _process(delta: float) -> void:
 	if not animation_player.is_playing():
 		animation_player.play("idle")
 		
+	if critical_zoom_target.is_finite():
+		camera_2d.global_position = critical_zoom_target
+	else:
+		camera_2d.global_position = global_position
+		
+
 func _physics_process(delta: float) -> void:
 	if not can_act and (animation_player.is_playing() and animation_player.current_animation.contains("attack")):
 		can_act = true

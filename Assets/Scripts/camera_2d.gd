@@ -10,6 +10,8 @@ func _ready() -> void:
 	set_drag_horizontal_enabled(true)
 	set_drag_margin(SIDE_LEFT, .1)
 	set_drag_margin(SIDE_RIGHT, .1)
+	
+	top_level = true
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

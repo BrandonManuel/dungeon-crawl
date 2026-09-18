@@ -648,6 +648,7 @@ motion_mode = 1
 script = ExtResource("1_tjamc")
 hit_preset = ExtResource("7_ij21g")
 death_preset = ExtResource("2_6lcod")
+GOBLIN_SPEED = 0.0
 GOBLIN_HEALTH = 40.0
 GOBLIN_KNOCKBACK = 150.0
 GOBLIN_ATTACK_COOLDOWN_SECONDS = 1.0
